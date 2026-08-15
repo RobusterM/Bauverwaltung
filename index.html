@@ -14,314 +14,207 @@
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
   <style>
 
     body {
-
       font-family: Arial, sans-serif;
-
       margin: 0;
-
       padding: 20px;
-
       background: #f4f4f4;
-
     }
-
 
     h1 {
-
       margin-top: 0;
-
     }
-
 
     h2 {
-
       margin-top: 0;
-
     }
-
 
     .card {
-
       background: white;
-
       border-radius: 12px;
-
       padding: 20px;
-
       margin-top: 20px;
-
-      box-shadow:
-        0 2px 8px rgba(0,0,0,0.1);
-
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
 
     .success {
-
       color: #16803c;
-
     }
-
 
     .error {
-
       color: #c62828;
-
     }
-
 
     .info {
-
       color: #555;
-
     }
-
 
     label {
-
       display: block;
-
       font-weight: bold;
-
       margin-top: 15px;
-
       margin-bottom: 6px;
-
     }
-
 
     select,
     input,
     textarea {
-
       width: 100%;
-
       box-sizing: border-box;
-
       padding: 12px;
-
       font-size: 16px;
-
       border: 1px solid #ccc;
-
       border-radius: 8px;
-
       background: white;
-
     }
-
 
     textarea {
-
       resize: vertical;
-
       min-height: 80px;
-
     }
-
 
     button {
-
       width: 100%;
-
       padding: 14px;
-
       margin-top: 20px;
-
       font-size: 16px;
-
       border: none;
-
       border-radius: 10px;
-
       cursor: pointer;
-
       background: #2481cc;
-
       color: white;
-
     }
-
 
     button:disabled {
-
       background: #aaa;
-
       cursor: default;
-
     }
-
 
     .typeButtons {
-
       display: flex;
-
       gap: 10px;
-
     }
-
 
     .typeButton {
-
       flex: 1;
-
       margin-top: 0;
-
       background: #ddd;
-
       color: #333;
-
     }
-
 
     .typeButton.active {
-
       background: #2481cc;
-
       color: white;
-
     }
-
 
     #authResult {
-
       margin-top: 15px;
-
     }
-
 
     #bookingResult {
-
       margin-top: 15px;
-
       line-height: 1.5;
-
     }
-
 
     #bookingCard {
-
       display: none;
-
     }
-
 
     #myBookingsCard {
-
       display: none;
-
     }
-
 
     .booking {
-
       border: 1px solid #ddd;
-
       border-radius: 10px;
-
       padding: 15px;
-
       margin-top: 12px;
-
       background: #fafafa;
-
     }
-
 
     .bookingHeader {
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       gap: 10px;
-
     }
-
 
     .bookingCategory {
-
       font-weight: bold;
-
       font-size: 17px;
-
     }
-
 
     .bookingAmount {
-
       font-weight: bold;
-
       font-size: 17px;
-
       white-space: nowrap;
-
     }
-
 
     .expense {
-
       color: #c62828;
-
     }
-
 
     .income {
-
       color: #16803c;
-
     }
-
 
     .bookingDetails {
-
       margin-top: 8px;
-
       color: #555;
-
       font-size: 14px;
-
       line-height: 1.5;
-
     }
-
 
     .bookingDescription {
-
       margin-top: 8px;
-
       padding-top: 8px;
-
       border-top: 1px solid #ddd;
-
       font-size: 14px;
-
     }
 
+    .bookingActions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .bookingActions button {
+      margin-top: 0;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .editButton {
+      background: #777;
+    }
+
+    .deleteButton {
+      background: #c62828;
+    }
 
     .emptyBookings {
-
       text-align: center;
-
       color: #777;
-
       padding: 20px 0;
-
     }
 
-
     .reloadButton {
-
       background: #777;
-
       margin-top: 15px;
+    }
 
+    .cancelButton {
+      background: #777;
+    }
+
+    .editingNotice {
+      background: #fff3cd;
+      color: #856404;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
     }
 
   </style>
@@ -358,33 +251,20 @@
 
     <h2>👤 Benutzer</h2>
 
-
     <p>
-
       <strong>Name:</strong>
-
       <span id="name"></span>
-
     </p>
 
-
     <p>
-
       <strong>Username:</strong>
-
       <span id="username"></span>
-
     </p>
-
 
     <p>
-
       <strong>Telegram ID:</strong>
-
       <span id="id"></span>
-
     </p>
-
 
     <button
       id="authButton"
@@ -395,14 +275,13 @@
 
     </button>
 
-
     <div id="authResult"></div>
 
   </div>
 
 
   <!-- ==================================================
-       NEUE BUCHUNG
+       NEUE / BEARBEITEN BUCHUNG
        ================================================== -->
 
   <div
@@ -410,7 +289,20 @@
     class="card"
   >
 
-    <h2>➕ Neue Buchung</h2>
+    <h2 id="bookingFormTitle">
+      ➕ Neue Buchung
+    </h2>
+
+
+    <div
+      id="editingNotice"
+      class="editingNotice"
+      style="display:none;"
+    >
+
+      ✏️ Du bearbeitest gerade eine bestehende Buchung.
+
+    </div>
 
 
     <label for="project">
@@ -526,6 +418,18 @@
     </button>
 
 
+    <button
+      id="cancelEditButton"
+      class="cancelButton"
+      onclick="cancelEdit()"
+      style="display:none;"
+    >
+
+      ❌ Bearbeitung abbrechen
+
+    </button>
+
+
     <div id="bookingResult"></div>
 
   </div>
@@ -587,7 +491,7 @@
 
 
     // ==================================================
-    // APPS SCRIPT URL
+    // APPS SCRIPT
     // ==================================================
 
     const APPS_SCRIPT_URL =
@@ -603,6 +507,8 @@
     let categories = [];
 
     let bookingType = "Ausgabe";
+
+    let editingBookingId = null;
 
 
     // ==================================================
@@ -741,7 +647,6 @@
 
               },
 
-
               body:
 
                 JSON.stringify({
@@ -854,9 +759,7 @@
 
 
       const select =
-        document.getElementById(
-          "project"
-        );
+        document.getElementById("project");
 
 
       select.innerHTML =
@@ -887,7 +790,6 @@
                   "text/plain"
 
               },
-
 
               body:
 
@@ -990,11 +892,8 @@
 
 
         console.error(
-
           "Projektfehler:",
-
           error
-
         );
 
       }
@@ -1044,7 +943,6 @@
 
               },
 
-
               body:
 
                 JSON.stringify({
@@ -1057,7 +955,7 @@
 
                 })
 
-            }
+              }
 
           );
 
@@ -1099,11 +997,8 @@
 
 
         console.error(
-
           "Kategoriefehler:",
-
           error
-
         );
 
       }
@@ -1168,10 +1063,12 @@
 
 
     // ==================================================
-    // KATEGORIEN FILTERN
+    // KATEGORIEN
     // ==================================================
 
-    function updateCategoryList() {
+    function updateCategoryList(
+      selectedCategory = ""
+    ) {
 
 
       const select =
@@ -1220,6 +1117,16 @@
             category.name;
 
 
+          if (
+            category.name ===
+            selectedCategory
+          ) {
+
+            option.selected = true;
+
+          }
+
+
           select.appendChild(
             option
           );
@@ -1248,49 +1155,43 @@
 
 
     // ==================================================
-    // BUCHUNG SPEICHERN
+    // BUCHUNG SPEICHERN / ÄNDERN
     // ==================================================
 
     async function saveBooking() {
 
 
       const projectId =
-
         document.getElementById(
           "project"
         ).value;
 
 
       const category =
-
         document.getElementById(
           "category"
         ).value;
 
 
       const amount =
-
         document.getElementById(
           "amount"
         ).value;
 
 
       const description =
-
         document.getElementById(
           "description"
         ).value.trim();
 
 
       const button =
-
         document.getElementById(
           "saveBookingButton"
         );
 
 
       const result =
-
         document.getElementById(
           "bookingResult"
         );
@@ -1357,9 +1258,363 @@
 
         '<span class="info">' +
 
-        "⏳ Buchung wird gespeichert..." +
+        (
+          editingBookingId
+
+            ? "⏳ Änderung wird gespeichert..."
+
+            : "⏳ Buchung wird gespeichert..."
+        ) +
 
         "</span>";
+
+
+      try {
+
+
+        const action =
+
+          editingBookingId
+
+            ? "updateBooking"
+
+            : "createBooking";
+
+
+        const booking = {
+
+          projectId:
+            projectId,
+
+          type:
+            bookingType,
+
+          category:
+            category,
+
+          amount:
+            amount,
+
+          description:
+            description
+
+        };
+
+
+        if (editingBookingId) {
+
+          booking.id =
+            editingBookingId;
+
+        }
+
+
+        const response =
+
+          await fetch(
+
+            APPS_SCRIPT_URL,
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "text/plain"
+
+              },
+
+              body:
+
+                JSON.stringify({
+
+                  action:
+                    action,
+
+                  initData:
+                    tg.initData,
+
+                  booking:
+                    booking
+
+                })
+
+            }
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+
+            data.error ||
+
+            "Vorgang fehlgeschlagen"
+
+          );
+
+        }
+
+
+        if (editingBookingId) {
+
+
+          result.innerHTML =
+
+            '<span class="success">' +
+
+            "✅ Buchung erfolgreich geändert." +
+
+            "</span>";
+
+
+        } else {
+
+
+          result.innerHTML =
+
+            '<span class="success">' +
+
+            "✅ Buchung gespeichert!" +
+
+            "<br><br>" +
+
+            "Buchungs-ID: " +
+
+            data.bookingId +
+
+            "</span>";
+
+        }
+
+
+        cancelEdit();
+
+
+        await loadBookings();
+
+
+      } catch (error) {
+
+
+        result.innerHTML =
+
+          '<span class="error">' +
+
+          "❌ Fehler:<br>" +
+
+          error.message +
+
+          "</span>";
+
+      }
+
+
+      button.disabled = false;
+
+    }
+
+
+    // ==================================================
+    // BUCHUNG BEARBEITEN
+    // ==================================================
+
+    function editBooking(booking) {
+
+
+      editingBookingId =
+        booking.id;
+
+
+      document
+        .getElementById(
+          "bookingFormTitle"
+        )
+        .textContent =
+          "✏️ Buchung bearbeiten";
+
+
+      document
+        .getElementById(
+          "editingNotice"
+        )
+        .style.display =
+          "block";
+
+
+      document
+        .getElementById(
+          "cancelEditButton"
+        )
+        .style.display =
+          "block";
+
+
+      document
+        .getElementById(
+          "saveBookingButton"
+        )
+        .textContent =
+          "💾 Änderung speichern";
+
+
+      document
+        .getElementById(
+          "project"
+        )
+        .value =
+          booking.projectId;
+
+
+      setBookingType(
+        booking.type
+      );
+
+
+      updateCategoryList(
+        booking.category
+      );
+
+
+      document
+        .getElementById(
+          "amount"
+        )
+        .value =
+          booking.amount;
+
+
+      document
+        .getElementById(
+          "description"
+        )
+        .value =
+          booking.description || "";
+
+
+      document
+        .getElementById(
+          "bookingCard"
+        )
+        .scrollIntoView({
+
+          behavior: "smooth"
+
+        });
+
+    }
+
+
+    // ==================================================
+    // BEARBEITUNG ABBRECHEN
+    // ==================================================
+
+    function cancelEdit() {
+
+
+      editingBookingId =
+        null;
+
+
+      document
+        .getElementById(
+          "bookingFormTitle"
+        )
+        .textContent =
+          "➕ Neue Buchung";
+
+
+      document
+        .getElementById(
+          "editingNotice"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "cancelEditButton"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "saveBookingButton"
+        )
+        .textContent =
+          "💾 Buchung speichern";
+
+
+      document
+        .getElementById(
+          "project"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "category"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "amount"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "description"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "bookingResult"
+        )
+        .innerHTML = "";
+
+    }
+
+
+    // ==================================================
+    // BUCHUNG LÖSCHEN
+    // ==================================================
+
+    async function deleteBooking(
+      bookingId
+    ) {
+
+
+      const confirmed =
+
+        confirm(
+
+          "Möchtest du diese Buchung wirklich löschen?"
+
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
 
 
       try {
@@ -1382,35 +1637,18 @@
 
               },
 
-
               body:
 
                 JSON.stringify({
 
                   action:
-                    "createBooking",
+                    "deleteBooking",
 
                   initData:
                     tg.initData,
 
-                  booking: {
-
-                    projectId:
-                      projectId,
-
-                    type:
-                      bookingType,
-
-                    category:
-                      category,
-
-                    amount:
-                      amount,
-
-                    description:
-                      description
-
-                  }
+                  bookingId:
+                    bookingId
 
                 })
 
@@ -1429,44 +1667,12 @@
 
             data.error ||
 
-            "Buchung konnte nicht gespeichert werden"
+            "Buchung konnte nicht gelöscht werden"
 
           );
 
         }
 
-
-        result.innerHTML =
-
-          '<span class="success">' +
-
-          "✅ Buchung gespeichert!" +
-
-          "<br><br>" +
-
-          "Buchungs-ID: " +
-
-          data.bookingId +
-
-          "</span>";
-
-
-        document
-          .getElementById("amount")
-          .value = "";
-
-
-        document
-          .getElementById("description")
-          .value = "";
-
-
-        document
-          .getElementById("category")
-          .value = "";
-
-
-        // Liste aktualisieren
 
         await loadBookings();
 
@@ -1474,26 +1680,21 @@
       } catch (error) {
 
 
-        result.innerHTML =
+        alert(
 
-          '<span class="error">' +
+          "❌ Fehler beim Löschen:\n\n" +
 
-          "❌ Fehler beim Speichern:<br>" +
+          error.message
 
-          error.message +
-
-          "</span>";
+        );
 
       }
-
-
-      button.disabled = false;
 
     }
 
 
     // ==================================================
-    // MEINE BUCHUNGEN LADEN
+    // BUCHUNGEN LADEN
     // ==================================================
 
     async function loadBookings() {
@@ -1533,7 +1734,6 @@
                   "text/plain"
 
               },
-
 
               body:
 
@@ -1589,15 +1789,6 @@
 
           "</div>";
 
-
-        console.error(
-
-          "Buchungsfehler:",
-
-          error
-
-        );
-
       }
 
     }
@@ -1607,7 +1798,9 @@
     // BUCHUNGEN DARSTELLEN
     // ==================================================
 
-    function displayBookings(bookings) {
+    function displayBookings(
+      bookings
+    ) {
 
 
       const list =
@@ -1756,7 +1949,48 @@
 
                 : ""
 
-            );
+            ) +
+
+
+            '<div class="bookingActions">' +
+
+              '<button ' +
+
+                'class="editButton" ' +
+
+                'onclick=\'editBooking(' +
+
+                  JSON.stringify(booking)
+
+                    .replace(
+                      /'/g,
+                      "&#39;"
+                    ) +
+
+                ")'>" +
+
+                "✏️ Bearbeiten" +
+
+              "</button>" +
+
+
+              '<button ' +
+
+                'class="deleteButton" ' +
+
+                'onclick="deleteBooking(\'' +
+
+                  escapeHtml(
+                    booking.id
+                  ) +
+
+                "')\">" +
+
+                "🗑️ Löschen" +
+
+              "</button>" +
+
+            "</div>";
 
 
           list.appendChild(
@@ -1771,16 +2005,19 @@
 
 
     // ==================================================
-    // PROJEKTNAME ERMITTELN
+    // PROJEKTNAME
     // ==================================================
 
-    function getProjectName(projectId) {
+    function getProjectName(
+      projectId
+    ) {
 
 
       const project =
         projects.find(
 
           p =>
+
             String(p.id) ===
             String(projectId)
 
@@ -1800,10 +2037,12 @@
 
 
     // ==================================================
-    // HTML SICHER DARSTELLEN
+    // HTML ESCAPING
     // ==================================================
 
-    function escapeHtml(value) {
+    function escapeHtml(
+      value
+    ) {
 
 
       return String(value)
@@ -1837,7 +2076,6 @@
 
 
   </script>
-
 
 </body>
 
