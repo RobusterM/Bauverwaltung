@@ -31,6 +31,10 @@
       margin-top: 0;
     }
 
+    h3 {
+      margin-bottom: 10px;
+    }
+
     .card {
       background: white;
       border-radius: 12px;
@@ -95,7 +99,7 @@
     }
 
     /* =========================================
-       FORMULAR
+       FORMULARE
        ========================================= */
 
     label {
@@ -130,6 +134,11 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
     }
 
     .primaryButton {
@@ -261,6 +270,38 @@
     }
 
     /* =========================================
+       AUSWERTUNG FILTER
+       ========================================= */
+
+    .filterBox {
+      background: #f8f8f8;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .filterBox label {
+      margin-top: 12px;
+    }
+
+    .filterBox label:first-child {
+      margin-top: 0;
+    }
+
+    .dateRange {
+      display: none;
+    }
+
+    .dateRange.visible {
+      display: block;
+    }
+
+    .resetButton {
+      background: #ddd;
+      color: #333;
+    }
+
+    /* =========================================
        AUSWERTUNG
        ========================================= */
 
@@ -338,6 +379,11 @@
       color: #777;
       text-align: center;
       padding: 15px 0;
+    }
+
+    .activeFilter {
+      background: #e8f2fb;
+      border: 1px solid #2481cc;
     }
 
   </style>
@@ -688,6 +734,139 @@
     <h2>📊 Auswertung</h2>
 
 
+    <!-- FILTER -->
+
+    <div class="filterBox">
+
+
+      <h3>🔎 Filter</h3>
+
+
+      <label for="evaluationPeriod">
+        Zeitraum
+      </label>
+
+
+      <select
+        id="evaluationPeriod"
+        onchange="handlePeriodChange()"
+      >
+
+        <option value="all">
+          Alle
+        </option>
+
+        <option value="currentMonth">
+          Dieser Monat
+        </option>
+
+        <option value="lastMonth">
+          Letzter Monat
+        </option>
+
+        <option value="currentYear">
+          Dieses Jahr
+        </option>
+
+        <option value="custom">
+          Benutzerdefiniert
+        </option>
+
+      </select>
+
+
+      <div
+        id="customDateRange"
+        class="dateRange"
+      >
+
+        <label for="startDate">
+          Von
+        </label>
+
+        <input
+          id="startDate"
+          type="date"
+        >
+
+
+        <label for="endDate">
+          Bis
+        </label>
+
+        <input
+          id="endDate"
+          type="date"
+        >
+
+      </div>
+
+
+      <label for="evaluationProject">
+        Projekt
+      </label>
+
+
+      <select
+        id="evaluationProject"
+      >
+
+        <option value="">
+          Alle Projekte
+        </option>
+
+      </select>
+
+
+      <label for="evaluationType">
+        Typ
+      </label>
+
+
+      <select
+        id="evaluationType"
+      >
+
+        <option value="Alle">
+          Einnahmen und Ausgaben
+        </option>
+
+        <option value="Ausgabe">
+          Nur Ausgaben
+        </option>
+
+        <option value="Einnahme">
+          Nur Einnahmen
+        </option>
+
+      </select>
+
+
+      <button
+        class="primaryButton"
+        onclick="loadEvaluation()"
+      >
+
+        🔎 Auswertung anzeigen
+
+      </button>
+
+
+      <button
+        class="resetButton"
+        onclick="resetEvaluationFilters()"
+      >
+
+        ↩️ Filter zurücksetzen
+
+      </button>
+
+
+    </div>
+
+
+    <!-- AUSWERTUNG -->
+
     <div
       id="evaluationContent"
     >
@@ -697,16 +876,6 @@
       </div>
 
     </div>
-
-
-    <button
-      class="secondaryButton"
-      onclick="loadEvaluation()"
-    >
-
-      🔄 Aktualisieren
-
-    </button>
 
 
     <button
@@ -1080,6 +1249,8 @@
           .style.display =
             "block";
 
+
+        populateEvaluationProjects();
 
         loadEvaluation();
 
@@ -1866,6 +2037,350 @@
 
 
     // =========================================
+    // AUSWERTUNG – PROJEKTE
+    // =========================================
+
+    function populateEvaluationProjects() {
+
+
+      const select =
+        document.getElementById(
+          "evaluationProject"
+        );
+
+
+      const currentValue =
+        select.value;
+
+
+      select.innerHTML =
+
+        '<option value="">' +
+        "Alle Projekte" +
+        "</option>";
+
+
+      projects.forEach(
+
+        project => {
+
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            project.id;
+
+
+          option.textContent =
+            project.name;
+
+
+          select.appendChild(
+            option
+          );
+
+        }
+
+      );
+
+
+      if (
+        projects.some(
+          project =>
+            String(project.id) ===
+            String(currentValue)
+        )
+      ) {
+
+        select.value =
+          currentValue;
+
+      }
+
+    }
+
+
+    // =========================================
+    // ZEITRAUM
+    // =========================================
+
+    function handlePeriodChange() {
+
+
+      const period =
+        document
+          .getElementById(
+            "evaluationPeriod"
+          )
+          .value;
+
+
+      const customRange =
+        document.getElementById(
+          "customDateRange"
+        );
+
+
+      if (
+        period ===
+        "custom"
+      ) {
+
+        customRange
+          .classList
+          .add("visible");
+
+      } else {
+
+        customRange
+          .classList
+          .remove("visible");
+
+      }
+
+    }
+
+
+    // =========================================
+    // DATUM FORMATIEREN
+    // =========================================
+
+    function formatDateForApi(
+      date
+    ) {
+
+
+      const year =
+        date.getFullYear();
+
+
+      const month =
+        String(
+          date.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      const day =
+        String(
+          date.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+      );
+
+    }
+
+
+    // =========================================
+    // FILTER ERMITTELN
+    // =========================================
+
+    function getEvaluationFilters() {
+
+
+      const period =
+        document
+          .getElementById(
+            "evaluationPeriod"
+          )
+          .value;
+
+
+      const project =
+        document
+          .getElementById(
+            "evaluationProject"
+          )
+          .value;
+
+
+      const type =
+        document
+          .getElementById(
+            "evaluationType"
+          )
+          .value;
+
+
+      let startDate = null;
+
+      let endDate = null;
+
+
+      const now =
+        new Date();
+
+
+      if (
+        period ===
+        "currentMonth"
+      ) {
+
+
+        const start =
+          new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            1
+          );
+
+
+        const end =
+          new Date(
+            now.getFullYear(),
+            now.getMonth() + 1,
+            0
+          );
+
+
+        startDate =
+          formatDateForApi(
+            start
+          );
+
+
+        endDate =
+          formatDateForApi(
+            end
+          );
+
+      }
+
+
+      if (
+        period ===
+        "lastMonth"
+      ) {
+
+
+        const start =
+          new Date(
+            now.getFullYear(),
+            now.getMonth() - 1,
+            1
+          );
+
+
+        const end =
+          new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            0
+          );
+
+
+        startDate =
+          formatDateForApi(
+            start
+          );
+
+
+        endDate =
+          formatDateForApi(
+            end
+          );
+
+      }
+
+
+      if (
+        period ===
+        "currentYear"
+      ) {
+
+
+        const start =
+          new Date(
+            now.getFullYear(),
+            0,
+            1
+          );
+
+
+        const end =
+          new Date(
+            now.getFullYear(),
+            11,
+            31
+          );
+
+
+        startDate =
+          formatDateForApi(
+            start
+          );
+
+
+        endDate =
+          formatDateForApi(
+            end
+          );
+
+      }
+
+
+      if (
+        period ===
+        "custom"
+      ) {
+
+
+        startDate =
+          document
+            .getElementById(
+              "startDate"
+            )
+            .value ||
+          null;
+
+
+        endDate =
+          document
+            .getElementById(
+              "endDate"
+            )
+            .value ||
+          null;
+
+      }
+
+
+      return {
+
+        project:
+          project,
+
+        type:
+          type,
+
+        startDate:
+          startDate,
+
+        endDate:
+          endDate
+
+      };
+
+    }
+
+
+    // =========================================
     // AUSWERTUNG LADEN
     // =========================================
 
@@ -1883,6 +2398,10 @@
 
 
       try {
+
+
+        const filters =
+          getEvaluationFilters();
 
 
         const response =
@@ -1907,7 +2426,10 @@
                     "getEvaluation",
 
                   initData:
-                    tg.initData
+                    tg.initData,
+
+                  filters:
+                    filters
 
                 })
 
@@ -1950,6 +2472,61 @@
           "</div>";
 
       }
+
+    }
+
+
+    // =========================================
+    // FILTER ZURÜCKSETZEN
+    // =========================================
+
+    function resetEvaluationFilters() {
+
+
+      document
+        .getElementById(
+          "evaluationPeriod"
+        )
+        .value =
+          "all";
+
+
+      document
+        .getElementById(
+          "evaluationProject"
+        )
+        .value =
+          "";
+
+
+      document
+        .getElementById(
+          "evaluationType"
+        )
+        .value =
+          "Alle";
+
+
+      document
+        .getElementById(
+          "startDate"
+        )
+        .value =
+          "";
+
+
+      document
+        .getElementById(
+          "endDate"
+        )
+        .value =
+          "";
+
+
+      handlePeriodChange();
+
+
+      loadEvaluation();
 
     }
 
