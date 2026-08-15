@@ -357,9 +357,7 @@
       padding: 15px 0;
     }
 
-    /* =========================================
-       ADMIN
-       ========================================= */
+    /* ADMIN */
 
     .adminSection {
       margin-top: 20px;
@@ -436,6 +434,44 @@
       color: #777;
       font-size: 14px;
       font-style: italic;
+    }
+
+    /* EINLADUNG */
+
+    .invitationBox {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+
+    .invitationLink {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .invitationLink input {
+      font-size: 13px;
+    }
+
+    .copyButton {
+      background: #2481cc;
+      color: white;
+    }
+
+    .telegramButton {
+      background: #16803c;
+      color: white;
+    }
+
+    .invitationCode {
+      font-family: monospace;
+      background: #eee;
+      padding: 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 8px;
     }
 
   </style>
@@ -890,6 +926,80 @@
         style="display:none;"
       >
 
+
+        <!-- EINLADUNG -->
+
+        <div class="invitationBox">
+
+          <h3>
+            👤 Benutzer einladen
+          </h3>
+
+          <p class="info">
+            Erstelle einen persönlichen Einladungslink für einen neuen Benutzer.
+          </p>
+
+
+          <button
+            id="createInvitationButton"
+            class="primaryButton"
+            onclick="createInvitation()"
+          >
+            🔗 Einladungslink erstellen
+          </button>
+
+
+          <div
+            id="invitationResult"
+            style="margin-top:15px;"
+          ></div>
+
+
+          <div
+            id="invitationLinkBox"
+            class="invitationLink"
+          >
+
+            <label>
+              Einladungslink
+            </label>
+
+
+            <input
+              id="invitationLink"
+              type="text"
+              readonly
+            >
+
+
+            <button
+              class="copyButton"
+              onclick="copyInvitationLink()"
+            >
+              📋 Link kopieren
+            </button>
+
+
+            <button
+              class="telegramButton"
+              onclick="openInvitationLink()"
+            >
+              ✈️ Link in Telegram öffnen
+            </button>
+
+
+            <div
+              id="invitationCode"
+              class="invitationCode"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- BENUTZERLISTE -->
+
         <div
           id="usersAdminList"
           class="adminList"
@@ -1012,6 +1122,8 @@
     let editingBookingId = null;
 
     let currentUser = null;
+
+    let currentInvitationLink = "";
 
 
     // =========================================
@@ -1387,6 +1499,209 @@
 
 
     // =========================================
+    // EINLADUNG ERSTELLEN
+    // =========================================
+
+    async function createInvitation() {
+
+
+      const button =
+        document.getElementById(
+          "createInvitationButton"
+        );
+
+
+      const result =
+        document.getElementById(
+          "invitationResult"
+        );
+
+
+      const linkBox =
+        document.getElementById(
+          "invitationLinkBox"
+        );
+
+
+      button.disabled = true;
+
+
+      result.innerHTML =
+        '<span class="info">' +
+        "⏳ Einladungslink wird erstellt..." +
+        "</span>";
+
+
+      linkBox.style.display =
+        "none";
+
+
+      try {
+
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain"
+              },
+
+              body:
+                JSON.stringify({
+
+                  action:
+                    "createInvitation",
+
+                  initData:
+                    tg.initData
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error
+          );
+
+        }
+
+
+        currentInvitationLink =
+          data.link;
+
+
+        document
+          .getElementById(
+            "invitationLink"
+          )
+          .value =
+            data.link;
+
+
+        document
+          .getElementById(
+            "invitationCode"
+          )
+          .textContent =
+            "Code: " +
+            data.code;
+
+
+        linkBox.style.display =
+          "block";
+
+
+        result.innerHTML =
+          '<span class="success">' +
+          "✅ Einladungslink wurde erstellt." +
+          "</span>";
+
+
+      } catch (error) {
+
+
+        result.innerHTML =
+          '<span class="error">' +
+          "❌ Einladung konnte nicht erstellt werden.<br>" +
+          escapeHtml(
+            error.message
+          ) +
+          "</span>";
+
+      }
+
+
+      button.disabled = false;
+
+    }
+
+
+    // =========================================
+    // EINLADUNG KOPIEREN
+    // =========================================
+
+    async function copyInvitationLink() {
+
+
+      if (!currentInvitationLink) {
+
+        return;
+
+      }
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          currentInvitationLink
+        );
+
+
+        alert(
+          "✅ Einladungslink wurde kopiert."
+        );
+
+
+      } catch (error) {
+
+        const input =
+          document.getElementById(
+            "invitationLink"
+          );
+
+
+        input.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+
+        alert(
+          "✅ Einladungslink wurde kopiert."
+        );
+
+      }
+
+    }
+
+
+    // =========================================
+    // TELEGRAM LINK ÖFFNEN
+    // =========================================
+
+    function openInvitationLink() {
+
+
+      if (!currentInvitationLink) {
+
+        return;
+
+      }
+
+
+      window.open(
+        currentInvitationLink,
+        "_blank"
+      );
+
+    }
+
+
+    // =========================================
     // BENUTZER LADEN
     // =========================================
 
@@ -1429,7 +1744,8 @@
 
                 })
 
-            }
+              }
+
           );
 
 
