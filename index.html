@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 
@@ -82,10 +83,6 @@
 <body>
 
   <h1>🏠 Bauverwaltung</h1>
-
-  <div id="status">
-    Telegram wird geprüft...
-  </div>
 
 
   <!-- ========================================= -->
@@ -212,12 +209,6 @@
     // ELEMENTE
     // =========================================
 
-    const status =
-      document.getElementById(
-        "status"
-      );
-
-
     const userCard =
       document.getElementById(
         "userCard"
@@ -243,17 +234,14 @@
 
     if (!tg.initData) {
 
-      status.innerHTML =
+      document.body.innerHTML =
+        '<div class="card">' +
         '<p class="error">' +
-        '<strong>❌ Keine Telegram-Daten</strong>' +
+        '<strong>❌ Diese Seite muss über Telegram geöffnet werden.</strong>' +
         '</p>' +
+        '</div>';
 
-        '<p>' +
-        'Diese Seite muss über Telegram geöffnet werden.' +
-        '</p>';
-
-    }
-
+    } else {
 
       const user =
         tg.initDataUnsafe.user;
@@ -338,9 +326,6 @@
 
         }
 
-
-        // Fallback für Telegram-Versionen,
-        // die start_param nicht liefern
 
         const params =
           new URLSearchParams(
@@ -626,3 +611,4 @@
 </body>
 
 </html>
+```
