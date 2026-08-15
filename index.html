@@ -260,6 +260,86 @@
       margin-bottom: 15px;
     }
 
+    /* =========================================
+       AUSWERTUNG
+       ========================================= */
+
+    .evaluationCards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .evaluationCard {
+      background: #f8f8f8;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .evaluationCard.full {
+      grid-column: 1 / -1;
+    }
+
+    .evaluationTitle {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .evaluationValue {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .evaluationIncome {
+      color: #16803c;
+    }
+
+    .evaluationExpense {
+      color: #c62828;
+    }
+
+    .evaluationPositive {
+      color: #16803c;
+    }
+
+    .evaluationNegative {
+      color: #c62828;
+    }
+
+    .evaluationSection {
+      margin-top: 25px;
+    }
+
+    .evaluationRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #ddd;
+      gap: 10px;
+    }
+
+    .evaluationRow:last-child {
+      border-bottom: none;
+    }
+
+    .evaluationRowName {
+      font-weight: bold;
+    }
+
+    .evaluationRowValue {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .evaluationEmpty {
+      color: #777;
+      text-align: center;
+      padding: 15px 0;
+    }
+
   </style>
 
 </head>
@@ -608,12 +688,25 @@
     <h2>📊 Auswertung</h2>
 
 
-    <p class="info">
+    <div
+      id="evaluationContent"
+    >
 
-      Die Auswertung wird im nächsten Schritt
-      aufgebaut.
+      <div class="info">
+        ⏳ Auswertung wird geladen...
+      </div>
 
-    </p>
+    </div>
+
+
+    <button
+      class="secondaryButton"
+      onclick="loadEvaluation()"
+    >
+
+      🔄 Aktualisieren
+
+    </button>
 
 
     <button
@@ -871,8 +964,6 @@
             "block";
 
 
-        // Admin-Menü
-
         if (
           String(
             currentUser.role
@@ -988,6 +1079,9 @@
           .getElementById("evaluationPage")
           .style.display =
             "block";
+
+
+        loadEvaluation();
 
       }
 
@@ -1772,6 +1866,380 @@
 
 
     // =========================================
+    // AUSWERTUNG LADEN
+    // =========================================
+
+    async function loadEvaluation() {
+
+
+      const content =
+        document.getElementById(
+          "evaluationContent"
+        );
+
+
+      content.innerHTML =
+        '<div class="info">⏳ Auswertung wird geladen...</div>';
+
+
+      try {
+
+
+        const response =
+          await fetch(
+
+            APPS_SCRIPT_URL,
+
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain"
+              },
+
+              body:
+
+                JSON.stringify({
+
+                  action:
+                    "getEvaluation",
+
+                  initData:
+                    tg.initData
+
+                })
+
+            }
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error
+          );
+
+        }
+
+
+        displayEvaluation(
+          data.evaluation
+        );
+
+
+      } catch (error) {
+
+
+        content.innerHTML =
+
+          '<div class="error">' +
+
+          "❌ Auswertung konnte nicht geladen werden.<br><br>" +
+
+          escapeHtml(
+            error.message
+          ) +
+
+          "</div>";
+
+      }
+
+    }
+
+
+    // =========================================
+    // AUSWERTUNG DARSTELLEN
+    // =========================================
+
+    function displayEvaluation(
+      evaluation
+    ) {
+
+
+      const content =
+        document.getElementById(
+          "evaluationContent"
+        );
+
+
+      const expenses =
+        Number(
+          evaluation.totalExpenses
+        ) || 0;
+
+
+      const income =
+        Number(
+          evaluation.totalIncome
+        ) || 0;
+
+
+      const balance =
+        Number(
+          evaluation.balance
+        ) || 0;
+
+
+      const formatMoney =
+        value =>
+
+          Number(
+            value
+          ).toLocaleString(
+            "de-DE",
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }
+          ) + " €";
+
+
+      const balanceClass =
+        balance >= 0
+          ? "evaluationPositive"
+          : "evaluationNegative";
+
+
+      let html = "";
+
+
+      // =======================================
+      // KENNZAHLEN
+      // =======================================
+
+      html +=
+
+        '<div class="evaluationCards">' +
+
+
+          '<div class="evaluationCard">' +
+
+            '<div class="evaluationTitle">' +
+              "💸 Ausgaben" +
+            "</div>" +
+
+            '<div class="evaluationValue evaluationExpense">' +
+              formatMoney(expenses) +
+            "</div>" +
+
+          "</div>" +
+
+
+          '<div class="evaluationCard">' +
+
+            '<div class="evaluationTitle">' +
+              "💰 Einnahmen" +
+            "</div>" +
+
+            '<div class="evaluationValue evaluationIncome">' +
+              formatMoney(income) +
+            "</div>" +
+
+          "</div>" +
+
+
+          '<div class="evaluationCard full">' +
+
+            '<div class="evaluationTitle">' +
+              "📈 Saldo" +
+            "</div>" +
+
+            '<div class="evaluationValue ' +
+              balanceClass +
+            '">' +
+
+              (
+                balance >= 0
+                  ? "+"
+                  : ""
+              ) +
+
+              formatMoney(balance) +
+
+            "</div>" +
+
+          "</div>" +
+
+
+        "</div>";
+
+
+      // =======================================
+      // KATEGORIEN
+      // =======================================
+
+      html +=
+
+        '<div class="evaluationSection">' +
+
+          "<h3>📂 Nach Kategorie</h3>";
+
+
+      const categories =
+        evaluation.byCategory || {};
+
+
+      const categoryEntries =
+        Object.entries(
+          categories
+        );
+
+
+      if (!categoryEntries.length) {
+
+
+        html +=
+
+          '<div class="evaluationEmpty">' +
+
+          "Keine Daten vorhanden." +
+
+          "</div>";
+
+
+      } else {
+
+
+        categoryEntries
+
+          .sort(
+            (a, b) =>
+              b[1] - a[1]
+          )
+
+          .forEach(
+
+            ([name, value]) => {
+
+
+              html +=
+
+                '<div class="evaluationRow">' +
+
+                  '<div class="evaluationRowName">' +
+
+                    escapeHtml(
+                      name
+                    ) +
+
+                  "</div>" +
+
+                  '<div class="evaluationRowValue">' +
+
+                    formatMoney(
+                      value
+                    ) +
+
+                  "</div>" +
+
+                "</div>";
+
+            }
+
+          );
+
+      }
+
+
+      html += "</div>";
+
+
+      // =======================================
+      // PROJEKTE
+      // =======================================
+
+      html +=
+
+        '<div class="evaluationSection">' +
+
+          "<h3>🏠 Nach Projekt</h3>";
+
+
+      const projectsData =
+        evaluation.byProject || {};
+
+
+      const projectEntries =
+        Object.entries(
+          projectsData
+        );
+
+
+      if (!projectEntries.length) {
+
+
+        html +=
+
+          '<div class="evaluationEmpty">' +
+
+          "Keine Daten vorhanden." +
+
+          "</div>";
+
+
+      } else {
+
+
+        projectEntries
+
+          .sort(
+            (a, b) =>
+              b[1] - a[1]
+          )
+
+          .forEach(
+
+            ([projectId, value]) => {
+
+
+              html +=
+
+                '<div class="evaluationRow">' +
+
+                  '<div class="evaluationRowName">' +
+
+                    escapeHtml(
+                      getProjectName(
+                        projectId
+                      )
+                    ) +
+
+                  "</div>" +
+
+                  '<div class="evaluationRowValue">' +
+
+                    formatMoney(
+                      value
+                    ) +
+
+                  "</div>" +
+
+                "</div>";
+
+            }
+
+          );
+
+      }
+
+
+      html += "</div>";
+
+
+      content.innerHTML =
+        html;
+
+    }
+
+
+    // =========================================
     // BEARBEITEN
     // =========================================
 
@@ -2005,8 +2473,11 @@
 
 
         alert(
+
           "❌ Fehler beim Löschen:\n\n" +
+
           error.message
+
         );
 
       }
