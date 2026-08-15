@@ -42,9 +42,18 @@
       color: #c62828;
     }
 
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #authResult {
+      margin-top: 15px;
     }
 
   </style>
@@ -84,10 +93,17 @@
       <span id="id"></span>
     </p>
 
+    <button onclick="authenticate()">
+      🔐 Bei Bauverwaltung anmelden
+    </button>
+
+    <div id="authResult"></div>
+
   </div>
 
 
   <script>
+
 
     const tg = window.Telegram.WebApp;
 
@@ -95,14 +111,15 @@
     tg.expand();
 
 
+
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/macros/s/AKfycbytTS_UdYyX0d_I05hTW6l8-YXb3WT1g1PD4BqF-AeGqipgYQJYYRFKhVyPXQyHlPxx/exec";
+
+
+
     const status =
       document.getElementById("status");
 
-
-    /*
-     * Prüfen, ob Telegram Daten
-     * übergeben hat.
-     */
 
     if (!tg.initData) {
 
@@ -157,6 +174,69 @@
           .getElementById("id")
           .textContent =
             user.id;
+
+      }
+
+    }
+
+    async function authenticate() {
+
+      const result =
+        document.getElementById("authResult");
+
+      result.innerHTML =
+        "⏳ Authentifizierung läuft...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "text/plain"
+              },
+
+              body: JSON.stringify({
+                initData: tg.initData
+              })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (data.ok) {
+
+          result.innerHTML =
+            '<span class="success">' +
+            "✅ Authentifiziert als " +
+            data.user.first_name +
+            "</span>";
+
+        } else {
+
+          result.innerHTML =
+            '<span class="error">' +
+            "❌ Authentifizierung fehlgeschlagen:<br>" +
+            data.error +
+            "</span>";
+
+        }
+
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          "❌ Verbindungsfehler:<br>" +
+          error +
+          "</span>";
 
       }
 
