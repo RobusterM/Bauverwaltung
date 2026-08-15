@@ -209,6 +209,121 @@
 
     }
 
+
+    #myBookingsCard {
+
+      display: none;
+
+    }
+
+
+    .booking {
+
+      border: 1px solid #ddd;
+
+      border-radius: 10px;
+
+      padding: 15px;
+
+      margin-top: 12px;
+
+      background: #fafafa;
+
+    }
+
+
+    .bookingHeader {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 10px;
+
+    }
+
+
+    .bookingCategory {
+
+      font-weight: bold;
+
+      font-size: 17px;
+
+    }
+
+
+    .bookingAmount {
+
+      font-weight: bold;
+
+      font-size: 17px;
+
+      white-space: nowrap;
+
+    }
+
+
+    .expense {
+
+      color: #c62828;
+
+    }
+
+
+    .income {
+
+      color: #16803c;
+
+    }
+
+
+    .bookingDetails {
+
+      margin-top: 8px;
+
+      color: #555;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+    }
+
+
+    .bookingDescription {
+
+      margin-top: 8px;
+
+      padding-top: 8px;
+
+      border-top: 1px solid #ddd;
+
+      font-size: 14px;
+
+    }
+
+
+    .emptyBookings {
+
+      text-align: center;
+
+      color: #777;
+
+      padding: 20px 0;
+
+    }
+
+
+    .reloadButton {
+
+      background: #777;
+
+      margin-top: 15px;
+
+    }
+
   </style>
 
 </head>
@@ -298,8 +413,6 @@
     <h2>➕ Neue Buchung</h2>
 
 
-    <!-- PROJEKT -->
-
     <label for="project">
 
       Projekt
@@ -317,8 +430,6 @@
 
     </select>
 
-
-    <!-- TYP -->
 
     <label>
 
@@ -357,8 +468,6 @@
     </div>
 
 
-    <!-- KATEGORIE -->
-
     <label for="category">
 
       Kategorie
@@ -377,8 +486,6 @@
     </select>
 
 
-    <!-- BETRAG -->
-
     <label for="amount">
 
       Betrag (€)
@@ -396,8 +503,6 @@
     >
 
 
-    <!-- BESCHREIBUNG -->
-
     <label for="description">
 
       Beschreibung (optional)
@@ -411,8 +516,6 @@
     ></textarea>
 
 
-    <!-- SPEICHERN -->
-
     <button
       id="saveBookingButton"
       onclick="saveBooking()"
@@ -425,6 +528,40 @@
 
     <div id="bookingResult"></div>
 
+  </div>
+
+
+  <!-- ==================================================
+       MEINE BUCHUNGEN
+       ================================================== -->
+
+  <div
+    id="myBookingsCard"
+    class="card"
+  >
+
+    <h2>📋 Meine Buchungen</h2>
+
+
+    <div id="bookingsList">
+
+      <div class="info">
+
+        ⏳ Buchungen werden geladen...
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="reloadButton"
+      onclick="loadBookings()"
+    >
+
+      🔄 Aktualisieren
+
+    </button>
 
   </div>
 
@@ -652,18 +789,21 @@
             "</span>";
 
 
-          // Buchungsbereich anzeigen
-
           document
             .getElementById("bookingCard")
             .style.display = "block";
 
 
-          // Daten laden
+          document
+            .getElementById("myBookingsCard")
+            .style.display = "block";
+
 
           await loadProjects();
 
           await loadCategories();
+
+          await loadBookings();
 
 
         } else {
@@ -825,7 +965,6 @@
 
 
         if (projects.length === 0) {
-
 
           select.innerHTML =
 
@@ -1157,10 +1296,6 @@
         );
 
 
-      // ----------------------------------------------
-      // PRÜFUNG
-      // ----------------------------------------------
-
       if (!projectId) {
 
 
@@ -1214,10 +1349,6 @@
 
       }
 
-
-      // ----------------------------------------------
-      // SPEICHERN
-      // ----------------------------------------------
 
       button.disabled = true;
 
@@ -1305,10 +1436,6 @@
         }
 
 
-        // --------------------------------------------
-        // ERFOLG
-        // --------------------------------------------
-
         result.innerHTML =
 
           '<span class="success">' +
@@ -1324,8 +1451,6 @@
           "</span>";
 
 
-        // Formular leeren
-
         document
           .getElementById("amount")
           .value = "";
@@ -1339,6 +1464,11 @@
         document
           .getElementById("category")
           .value = "";
+
+
+        // Liste aktualisieren
+
+        await loadBookings();
 
 
       } catch (error) {
@@ -1358,6 +1488,350 @@
 
 
       button.disabled = false;
+
+    }
+
+
+    // ==================================================
+    // MEINE BUCHUNGEN LADEN
+    // ==================================================
+
+    async function loadBookings() {
+
+
+      const list =
+        document.getElementById(
+          "bookingsList"
+        );
+
+
+      list.innerHTML =
+
+        '<div class="info">' +
+
+        "⏳ Buchungen werden geladen..." +
+
+        "</div>";
+
+
+      try {
+
+
+        const response =
+
+          await fetch(
+
+            APPS_SCRIPT_URL,
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "text/plain"
+
+              },
+
+
+              body:
+
+                JSON.stringify({
+
+                  action:
+                    "getBookings",
+
+                  initData:
+                    tg.initData
+
+                })
+
+            }
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+
+            data.error ||
+
+            "Buchungen konnten nicht geladen werden"
+
+          );
+
+        }
+
+
+        displayBookings(
+          data.bookings || []
+        );
+
+
+      } catch (error) {
+
+
+        list.innerHTML =
+
+          '<div class="error">' +
+
+          "❌ Buchungen konnten nicht geladen werden." +
+
+          "<br><br>" +
+
+          error.message +
+
+          "</div>";
+
+
+        console.error(
+
+          "Buchungsfehler:",
+
+          error
+
+        );
+
+      }
+
+    }
+
+
+    // ==================================================
+    // BUCHUNGEN DARSTELLEN
+    // ==================================================
+
+    function displayBookings(bookings) {
+
+
+      const list =
+        document.getElementById(
+          "bookingsList"
+        );
+
+
+      if (!bookings.length) {
+
+
+        list.innerHTML =
+
+          '<div class="emptyBookings">' +
+
+          "Noch keine Buchungen vorhanden." +
+
+          "</div>";
+
+
+        return;
+
+      }
+
+
+      list.innerHTML = "";
+
+
+      bookings.forEach(
+
+        booking => {
+
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "booking";
+
+
+          const amount =
+            Number(
+              booking.amount
+            ).toLocaleString(
+              "de-DE",
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              }
+            );
+
+
+          const amountClass =
+
+            booking.type === "Einnahme"
+
+              ? "income"
+
+              : "expense";
+
+
+          const symbol =
+
+            booking.type === "Einnahme"
+
+              ? "💰"
+
+              : "💸";
+
+
+          item.innerHTML =
+
+            '<div class="bookingHeader">' +
+
+              '<div class="bookingCategory">' +
+
+                symbol +
+
+                " " +
+
+                escapeHtml(
+                  booking.category
+                ) +
+
+              "</div>" +
+
+              '<div class="bookingAmount ' +
+
+              amountClass +
+
+              '">' +
+
+                (
+                  booking.type === "Einnahme"
+                    ? "+"
+                    : "-"
+                ) +
+
+                amount +
+
+                " €" +
+
+              "</div>" +
+
+            "</div>" +
+
+
+            '<div class="bookingDetails">' +
+
+              escapeHtml(
+                booking.date
+              ) +
+
+              " · " +
+
+              escapeHtml(
+                booking.time
+              ) +
+
+              "<br>" +
+
+              "Projekt: " +
+
+              escapeHtml(
+                getProjectName(
+                  booking.projectId
+                )
+              ) +
+
+            "</div>" +
+
+
+            (
+              booking.description
+
+                ? '<div class="bookingDescription">' +
+
+                  escapeHtml(
+                    booking.description
+                  ) +
+
+                  "</div>"
+
+                : ""
+
+            );
+
+
+          list.appendChild(
+            item
+          );
+
+        }
+
+      );
+
+    }
+
+
+    // ==================================================
+    // PROJEKTNAME ERMITTELN
+    // ==================================================
+
+    function getProjectName(projectId) {
+
+
+      const project =
+        projects.find(
+
+          p =>
+            String(p.id) ===
+            String(projectId)
+
+        );
+
+
+      if (project) {
+
+        return project.name;
+
+      }
+
+
+      return projectId;
+
+    }
+
+
+    // ==================================================
+    // HTML SICHER DARSTELLEN
+    // ==================================================
+
+    function escapeHtml(value) {
+
+
+      return String(value)
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
     }
 
