@@ -212,14 +212,20 @@
 
 
         if (data.ok) {
-
+        
           result.innerHTML =
             '<span class="success">' +
-            "✅ Authentifiziert als " +
+            "✅ Authentifiziert<br><br>" +
+            "👤 " +
             data.user.first_name +
+            " " +
+            data.user.last_name +
+            "<br>" +
+            "🔑 Rolle: " +
+            data.user.role +
             "</span>";
-
-        } else {
+        
+        }else {
 
           result.innerHTML =
             '<span class="error">' +
