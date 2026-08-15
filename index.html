@@ -26,6 +26,10 @@
       margin-top: 0;
     }
 
+    h2 {
+      margin-top: 0;
+    }
+
     .card {
       background: white;
       border-radius: 12px;
@@ -42,6 +46,34 @@
       color: #c62828;
     }
 
+    .info {
+      color: #555;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
     button {
       width: 100%;
       padding: 14px;
@@ -50,10 +82,47 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      background: #2481cc;
+      color: white;
+    }
+
+    button:disabled {
+      background: #aaa;
+      cursor: default;
+    }
+
+    .secondaryButton {
+      background: #777;
     }
 
     #authResult {
       margin-top: 15px;
+    }
+
+    #bookingCard {
+      display: none;
+    }
+
+    #bookingResult {
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+
+    .typeButtons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .typeButton {
+      flex: 1;
+      margin-top: 0;
+      background: #ddd;
+      color: #333;
+    }
+
+    .typeButton.active {
+      background: #2481cc;
+      color: white;
     }
 
   </style>
@@ -65,10 +134,19 @@
 
   <h1>🏠 Bauverwaltung</h1>
 
+
+  <!-- =====================================================
+       TELEGRAM STATUS
+       ===================================================== -->
+
   <div id="status">
     Telegram wird geprüft...
   </div>
 
+
+  <!-- =====================================================
+       BENUTZER
+       ===================================================== -->
 
   <div
     id="userCard"
@@ -93,7 +171,10 @@
       <span id="id"></span>
     </p>
 
-    <button onclick="authenticate()">
+    <button
+      id="authButton"
+      onclick="authenticate()"
+    >
       🔐 Bei Bauverwaltung anmelden
     </button>
 
@@ -102,24 +183,183 @@
   </div>
 
 
+  <!-- =====================================================
+       NEUE BUCHUNG
+       ===================================================== -->
+
+  <div
+    id="bookingCard"
+    class="card"
+  >
+
+    <h2>➕ Neue Buchung</h2>
+
+
+    <!-- Projekt -->
+
+    <label for="project">
+      Projekt
+    </label>
+
+    <select id="project">
+
+      <option value="">
+        Projekte werden geladen...
+      </option>
+
+    </select>
+
+
+    <!-- Typ -->
+
+    <label>
+      Typ
+    </label>
+
+    <div class="typeButtons">
+
+      <button
+        type="button"
+        id="expenseButton"
+        class="typeButton active"
+        onclick="setBookingType('Ausgabe')"
+      >
+        💸 Ausgabe
+      </button>
+
+      <button
+        type="button"
+        id="incomeButton"
+        class="typeButton"
+        onclick="setBookingType('Einnahme')"
+      >
+        💰 Einnahme
+      </button>
+
+    </div>
+
+
+    <!-- Kategorie -->
+
+    <label for="category">
+      Kategorie
+    </label>
+
+    <select id="category">
+
+      <option value="">
+        Kategorie wird geladen...
+      </option>
+
+    </select>
+
+
+    <!-- Betrag -->
+
+    <label for="amount">
+      Betrag (€)
+    </label>
+
+    <input
+      id="amount"
+      type="number"
+      inputmode="decimal"
+      step="0.01"
+      min="0"
+      placeholder="0,00"
+    >
+
+
+    <!-- Beschreibung -->
+
+    <label for="description">
+      Beschreibung (optional)
+    </label>
+
+    <textarea
+      id="description"
+      placeholder="z. B. Baumaterial, Rechnung Nr. 123..."
+    ></textarea>
+
+
+    <!-- Speichern -->
+
+    <button
+      id="saveBookingButton"
+      onclick="saveBooking()"
+    >
+      💾 Buchung speichern
+    </button>
+
+
+    <div id="bookingResult"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
   <script>
 
 
-    const tg = window.Telegram.WebApp;
+    // =====================================================
+    // TELEGRAM
+    // =====================================================
+
+    const tg =
+      window.Telegram.WebApp;
+
 
     tg.ready();
     tg.expand();
 
 
+    // =====================================================
+    // APPS SCRIPT
+    // =====================================================
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/macros/s/AKfycbytTS_UdYyX0d_I05hTW6l8-YXb3WT1g1PD4BqF-AeGqipgYQJYYRFKhVyPXQyHlPxx/exec";
 
 
+    // =====================================================
+    // GLOBALE VARIABLEN
+    // =====================================================
+
+    let projects = [];
+
+    let categories = [];
+
+    let bookingType = "Ausgabe";
+
+    let authenticatedUser = null;
+
+
+    // =====================================================
+    // ELEMENTE
+    // =====================================================
 
     const status =
       document.getElementById("status");
 
+    const userCard =
+      document.getElementById("userCard");
+
+    const bookingCard =
+      document.getElementById("bookingCard");
+
+    const authResult =
+      document.getElementById("authResult");
+
+    const bookingResult =
+      document.getElementById("bookingResult");
+
+
+    // =====================================================
+    // TELEGRAM PRÜFEN
+    // =====================================================
 
     if (!tg.initData) {
 
@@ -146,9 +386,8 @@
 
       if (user) {
 
-        document
-          .getElementById("userCard")
-          .style.display = "block";
+        userCard.style.display =
+          "block";
 
 
         document
@@ -179,10 +418,27 @@
 
     }
 
+
+    // =====================================================
+    // TELEGRAM AUTHENTIFIZIERUNG
+    // =====================================================
+
     async function authenticate() {
 
       const result =
-        document.getElementById("authResult");
+        document.getElementById(
+          "authResult"
+        );
+
+      const authButton =
+        document.getElementById(
+          "authButton"
+        );
+
+
+      authButton.disabled =
+        true;
+
 
       result.innerHTML =
         "⏳ Authentifizierung läuft...";
@@ -201,8 +457,12 @@
               },
 
               body: JSON.stringify({
-                initData: tg.initData
+
+                initData:
+                  tg.initData
+
               })
+
             }
           );
 
@@ -212,26 +472,54 @@
 
 
         if (data.ok) {
-        
+
+          // Benutzer speichern
+
+          authenticatedUser =
+            data.user;
+
+
           result.innerHTML =
             '<span class="success">' +
             "✅ Authentifiziert<br><br>" +
+
             "👤 " +
             data.user.first_name +
             " " +
             data.user.last_name +
+
             "<br>" +
+
             "🔑 Rolle: " +
             data.user.role +
+
             "</span>";
-        
-        }else {
+
+
+          // Buchungsbereich anzeigen
+
+          bookingCard.style.display =
+            "block";
+
+
+          // Projekte und Kategorien laden
+
+          await loadProjects();
+
+          await loadCategories();
+
+
+        } else {
 
           result.innerHTML =
             '<span class="error">' +
             "❌ Authentifizierung fehlgeschlagen:<br>" +
             data.error +
             "</span>";
+
+
+          authButton.disabled =
+            false;
 
         }
 
@@ -244,7 +532,512 @@
           error +
           "</span>";
 
+
+        authButton.disabled =
+          false;
+
       }
+
+    }
+
+    async function loadProjects() {
+
+      const select =
+        document.getElementById(
+          "project"
+        );
+
+
+      select.innerHTML =
+        '<option value="">' +
+        '⏳ Projekte werden geladen...' +
+        '</option>';
+
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type": "text/plain"
+              },
+
+              body: JSON.stringify({
+
+                action:
+                  "getProjects",
+
+                initData:
+                  tg.initData
+
+              })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error ||
+            "Projekte konnten nicht geladen werden"
+          );
+
+        }
+
+
+        projects =
+          data.projects || [];
+
+
+        select.innerHTML =
+          '<option value="">' +
+          'Projekt auswählen...' +
+          '</option>';
+
+
+        projects.forEach(
+          project => {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              project.id;
+
+
+            option.textContent =
+              project.name;
+
+
+            select.appendChild(
+              option
+            );
+
+          }
+        );
+
+
+        if (projects.length === 0) {
+
+          select.innerHTML =
+            '<option value="">' +
+            'Keine aktiven Projekte vorhanden' +
+            '</option>';
+
+        }
+
+
+      } catch (error) {
+
+        select.innerHTML =
+          '<option value="">' +
+          '❌ Fehler beim Laden' +
+          '</option>';
+
+
+        console.error(
+          "Projektfehler:",
+          error
+        );
+
+      }
+
+    }
+
+    async function loadCategories() {
+
+      const select =
+        document.getElementById(
+          "category"
+        );
+
+
+      select.innerHTML =
+        '<option value="">' +
+        '⏳ Kategorien werden geladen...' +
+        '</option>';
+
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type": "text/plain"
+              },
+
+              body: JSON.stringify({
+
+                action:
+                  "getCategories",
+
+                initData:
+                  tg.initData
+
+              })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error ||
+            "Kategorien konnten nicht geladen werden"
+          );
+
+        }
+
+
+        categories =
+          data.categories || [];
+
+
+        updateCategoryList();
+
+
+      } catch (error) {
+
+        select.innerHTML =
+          '<option value="">' +
+          '❌ Fehler beim Laden' +
+          '</option>';
+
+
+        console.error(
+          "Kategoriefehler:",
+          error
+        );
+
+      }
+
+    }
+
+    function setBookingType(type) {
+
+      bookingType =
+        type;
+
+
+      const expenseButton =
+        document.getElementById(
+          "expenseButton"
+        );
+
+      const incomeButton =
+        document.getElementById(
+          "incomeButton"
+        );
+
+
+      if (type === "Ausgabe") {
+
+        expenseButton
+          .classList
+          .add("active");
+
+        incomeButton
+          .classList
+          .remove("active");
+
+      } else {
+
+        incomeButton
+          .classList
+          .add("active");
+
+        expenseButton
+          .classList
+          .remove("active");
+
+      }
+
+
+      updateCategoryList();
+
+    }
+
+    function updateCategoryList() {
+
+      const select =
+        document.getElementById(
+          "category"
+        );
+
+
+      select.innerHTML =
+        '<option value="">' +
+        'Kategorie auswählen...' +
+        '</option>';
+
+
+      const filteredCategories =
+        categories.filter(
+          category =>
+            category.type === bookingType
+        );
+
+
+      filteredCategories.forEach(
+        category => {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            category.name;
+
+
+          option.textContent =
+            category.name;
+
+
+          select.appendChild(
+            option
+          );
+
+        }
+      );
+
+
+      if (
+        filteredCategories.length === 0
+      ) {
+
+        select.innerHTML =
+          '<option value="">' +
+          'Keine Kategorien vorhanden' +
+          '</option>';
+
+      }
+
+    }
+
+    async function saveBooking() {
+
+      const projectId =
+        document.getElementById(
+          "project"
+        ).value;
+
+
+      const category =
+        document.getElementById(
+          "category"
+        ).value;
+
+
+      const amountInput =
+        document.getElementById(
+          "amount"
+        ).value;
+
+
+      const description =
+        document.getElementById(
+          "description"
+        ).value.trim();
+
+
+      const saveButton =
+        document.getElementById(
+          "saveBookingButton"
+        );
+
+
+      // -----------------------------------------------
+      // Eingaben prüfen
+      // -----------------------------------------------
+
+      if (!projectId) {
+
+        bookingResult.innerHTML =
+          '<span class="error">' +
+          "❌ Bitte ein Projekt auswählen." +
+          "</span>";
+
+        return;
+
+      }
+
+
+      if (!category) {
+
+        bookingResult.innerHTML =
+          '<span class="error">' +
+          "❌ Bitte eine Kategorie auswählen." +
+          "</span>";
+
+        return;
+
+      }
+
+
+      if (
+        !amountInput ||
+        Number(amountInput) <= 0
+      ) {
+
+        bookingResult.innerHTML =
+          '<span class="error">' +
+          "❌ Bitte einen gültigen Betrag eingeben." +
+          "</span>";
+
+        return;
+
+      }
+
+
+      // -----------------------------------------------
+      // Speichern
+      // -----------------------------------------------
+
+      saveButton.disabled =
+        true;
+
+
+      bookingResult.innerHTML =
+        '<span class="info">' +
+        "⏳ Buchung wird gespeichert..." +
+        "</span>";
+
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type": "text/plain"
+              },
+
+              body: JSON.stringify({
+
+                action:
+                  "createBooking",
+
+                initData:
+                  tg.initData,
+
+                booking: {
+
+                  projectId:
+                    projectId,
+
+                  type:
+                    bookingType,
+
+                  category:
+                    category,
+
+                  amount:
+                    amountInput,
+
+                  description:
+                    description
+
+                }
+
+              })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error ||
+            "Buchung konnte nicht gespeichert werden"
+          );
+
+        }
+
+
+        // ---------------------------------------------
+        // Erfolg
+        // ---------------------------------------------
+
+        bookingResult.innerHTML =
+          '<span class="success">' +
+
+          "✅ Buchung gespeichert!" +
+
+          "<br><br>" +
+
+          "Buchungs-ID: " +
+          data.bookingId +
+
+          "</span>";
+
+
+        // Formular zurücksetzen
+
+        document.getElementById(
+          "amount"
+        ).value = "";
+
+
+        document.getElementById(
+          "description"
+        ).value = "";
+
+
+        document.getElementById(
+          "category"
+        ).value = "";
+
+
+      } catch (error) {
+
+        bookingResult.innerHTML =
+          '<span class="error">' +
+
+          "❌ Fehler beim Speichern:<br>" +
+
+          error.message +
+
+          "</span>";
+
+      }
+
+
+      saveButton.disabled =
+        false;
 
     }
 
