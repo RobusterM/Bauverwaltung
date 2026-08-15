@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Bauverwaltung</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .success {
+      color: #16803c;
+    }
+
+    .error {
+      color: #c62828;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <h1>🏠 Bauverwaltung</h1>
+
+  <div id="status">
+    Telegram wird geprüft...
+  </div>
+
+
+  <div
+    id="userCard"
+    class="card"
+    style="display:none;"
+  >
+
+    <h2>👤 Benutzer</h2>
+
+    <p>
+      <strong>Name:</strong>
+      <span id="name"></span>
+    </p>
+
+    <p>
+      <strong>Username:</strong>
+      <span id="username"></span>
+    </p>
+
+    <p>
+      <strong>Telegram ID:</strong>
+      <span id="id"></span>
+    </p>
+
+  </div>
+
+
+  <script>
+
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+
+    const status =
+      document.getElementById("status");
+
+
+    /*
+     * Prüfen, ob Telegram Daten
+     * übergeben hat.
+     */
+
+    if (!tg.initData) {
+
+      status.innerHTML =
+        '<p class="error">' +
+        '<strong>❌ Keine Telegram-Daten</strong>' +
+        '</p>' +
+
+        '<p>' +
+        'Diese Seite muss über Telegram geöffnet werden.' +
+        '</p>';
+
+    } else {
+
+      status.innerHTML =
+        '<p class="success">' +
+        '<strong>✅ Telegram erkannt</strong>' +
+        '</p>';
+
+
+      const user =
+        tg.initDataUnsafe.user;
+
+
+      if (user) {
+
+        document
+          .getElementById("userCard")
+          .style.display = "block";
+
+
+        document
+          .getElementById("name")
+          .textContent =
+            user.first_name +
+            (
+              user.last_name
+                ? " " + user.last_name
+                : ""
+            );
+
+
+        document
+          .getElementById("username")
+          .textContent =
+            user.username
+              ? "@" + user.username
+              : "kein Username";
+
+
+        document
+          .getElementById("id")
+          .textContent =
+            user.id;
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html>
