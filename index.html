@@ -1,8 +1,8 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -27,28 +27,12 @@
       margin-top: 0;
     }
 
-    h2 {
-      margin-top: 0;
-    }
-
-    h3 {
-      margin-bottom: 10px;
-    }
-
     .card {
       background: white;
       border-radius: 12px;
       padding: 20px;
       margin-top: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .userInfo {
-      background: white;
-      border-radius: 12px;
-      padding: 15px 20px;
-      margin-top: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .success {
@@ -59,8 +43,14 @@
       color: #c62828;
     }
 
-    .info {
-      color: #555;
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin-top: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
     }
 
     button {
@@ -71,6 +61,8 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      background: #2481cc;
+      color: white;
     }
 
     button:disabled {
@@ -78,400 +70,9 @@
       cursor: default;
     }
 
-    .primaryButton {
-      background: #2481cc;
-      color: white;
-    }
-
-    .secondaryButton {
-      background: #777;
-      color: white;
-    }
-
-    .menu {
-      margin-top: 20px;
-    }
-
-    .menuButton {
-      width: 100%;
-      padding: 18px;
-      margin-top: 12px;
-      font-size: 17px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: white;
-      color: #222;
-      text-align: left;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .menuButton:hover {
-      background: #f8f8f8;
-    }
-
-    .menuButton .icon {
-      font-size: 24px;
-      margin-right: 10px;
-    }
-
-    .adminButton {
-      border-left: 5px solid #2481cc;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
+    #authResult,
+    #registrationResult {
       margin-top: 15px;
-      margin-bottom: 6px;
-    }
-
-    select,
-    input,
-    textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: white;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .typeButtons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .typeButton {
-      flex: 1;
-      margin-top: 0;
-      background: #ddd;
-      color: #333;
-    }
-
-    .typeButton.active {
-      background: #2481cc;
-      color: white;
-    }
-
-    #authResult {
-      margin-top: 15px;
-    }
-
-    #bookingResult {
-      margin-top: 15px;
-      line-height: 1.5;
-    }
-
-    .booking {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 12px;
-      background: #fafafa;
-    }
-
-    .bookingHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .bookingCategory {
-      font-weight: bold;
-      font-size: 17px;
-    }
-
-    .bookingAmount {
-      font-weight: bold;
-      font-size: 17px;
-      white-space: nowrap;
-    }
-
-    .expense {
-      color: #c62828;
-    }
-
-    .income {
-      color: #16803c;
-    }
-
-    .bookingDetails {
-      margin-top: 8px;
-      color: #555;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .bookingDescription {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid #ddd;
-      font-size: 14px;
-    }
-
-    .bookingActions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .bookingActions button {
-      margin-top: 0;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    .editButton {
-      background: #777;
-      color: white;
-    }
-
-    .deleteButton {
-      background: #c62828;
-      color: white;
-    }
-
-    .emptyBookings {
-      text-align: center;
-      color: #777;
-      padding: 20px 0;
-    }
-
-    .editingNotice {
-      background: #fff3cd;
-      color: #856404;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 15px;
-    }
-
-    .filterBox {
-      background: #f8f8f8;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
-    }
-
-    .filterBox label {
-      margin-top: 12px;
-    }
-
-    .filterBox label:first-child {
-      margin-top: 0;
-    }
-
-    .dateRange {
-      display: none;
-    }
-
-    .dateRange.visible {
-      display: block;
-    }
-
-    .resetButton {
-      background: #ddd;
-      color: #333;
-    }
-
-    .evaluationCards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    .evaluationCard {
-      background: #f8f8f8;
-      border-radius: 10px;
-      padding: 15px;
-    }
-
-    .evaluationCard.full {
-      grid-column: 1 / -1;
-    }
-
-    .evaluationTitle {
-      font-size: 14px;
-      color: #666;
-    }
-
-    .evaluationValue {
-      font-size: 22px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .evaluationIncome {
-      color: #16803c;
-    }
-
-    .evaluationExpense {
-      color: #c62828;
-    }
-
-    .evaluationPositive {
-      color: #16803c;
-    }
-
-    .evaluationNegative {
-      color: #c62828;
-    }
-
-    .evaluationSection {
-      margin-top: 25px;
-    }
-
-    .evaluationRow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #ddd;
-      gap: 10px;
-    }
-
-    .evaluationRow:last-child {
-      border-bottom: none;
-    }
-
-    .evaluationRowName {
-      font-weight: bold;
-    }
-
-    .evaluationRowValue {
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .evaluationEmpty {
-      color: #777;
-      text-align: center;
-      padding: 15px 0;
-    }
-
-    /* ADMIN */
-
-    .adminSection {
-      margin-top: 20px;
-    }
-
-    .adminSectionButton {
-      background: #f5f5f5;
-      color: #222;
-      text-align: left;
-      font-weight: bold;
-    }
-
-    .adminList {
-      margin-top: 15px;
-    }
-
-    .adminUser {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 10px;
-    }
-
-    .adminUserHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .adminUserName {
-      font-weight: bold;
-      font-size: 17px;
-    }
-
-    .adminUserRole {
-      background: #e8f2fb;
-      color: #2481cc;
-      padding: 5px 9px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .adminUserDetails {
-      margin-top: 8px;
-      color: #666;
-      font-size: 14px;
-    }
-
-    .adminUserActions {
-      margin-top: 12px;
-    }
-
-    .adminUserActions select {
-      margin-top: 5px;
-    }
-
-    .adminUserActions button {
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    .roleSaveButton {
-      background: #2481cc;
-      color: white;
-    }
-
-    .selfUserNotice {
-      margin-top: 12px;
-      color: #777;
-      font-size: 14px;
-      font-style: italic;
-    }
-
-    /* EINLADUNG */
-
-    .invitationBox {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 15px;
-    }
-
-    .invitationLink {
-      display: none;
-      margin-top: 15px;
-    }
-
-    .invitationLink input {
-      font-size: 13px;
-    }
-
-    .copyButton {
-      background: #2481cc;
-      color: white;
-    }
-
-    .telegramButton {
-      background: #16803c;
-      color: white;
-    }
-
-    .invitationCode {
-      font-family: monospace;
-      background: #eee;
-      padding: 8px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 8px;
     }
 
   </style>
@@ -481,37 +82,85 @@
 
 <body>
 
-
   <h1>🏠 Bauverwaltung</h1>
-
 
   <div id="status">
     Telegram wird geprüft...
   </div>
 
 
-  <!-- BENUTZER -->
+  <!-- ========================================= -->
+  <!-- BENUTZERKARTE -->
+  <!-- ========================================= -->
 
   <div
     id="userCard"
-    class="userInfo"
+    class="card"
     style="display:none;"
   >
 
-    <div>
-      👤
-      <strong id="name"></strong>
-    </div>
+    <h2>👤 Benutzer</h2>
 
-    <div style="margin-top:6px;">
-      🔑
-      <span id="role"></span>
-    </div>
+    <p>
+      <strong>Name:</strong>
+      <span id="name"></span>
+    </p>
+
+    <p>
+      <strong>Username:</strong>
+      <span id="username"></span>
+    </p>
+
+    <p>
+      <strong>Telegram ID:</strong>
+      <span id="id"></span>
+    </p>
 
   </div>
 
 
-  <!-- LOGIN -->
+  <!-- ========================================= -->
+  <!-- REGISTRIERUNG -->
+  <!-- ========================================= -->
+
+  <div
+    id="registrationCard"
+    class="card"
+    style="display:none;"
+  >
+
+    <h2>🔐 Registrierung</h2>
+
+    <p>
+      Du wurdest zur Bauverwaltung eingeladen.
+    </p>
+
+    <p>
+      Bitte gib das Zugangspasswort ein:
+    </p>
+
+    <input
+      id="registrationPassword"
+      type="password"
+      placeholder="Zugangspasswort"
+      autocomplete="off"
+    >
+
+    <button
+      id="registrationButton"
+      onclick="registerUser()"
+    >
+      🔐 Registrieren
+    </button>
+
+    <div id="registrationResult"></div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- ANMELDUNG -->
+  <!-- ========================================= -->
 
   <div
     id="loginCard"
@@ -519,569 +168,18 @@
     style="display:none;"
   >
 
-    <button
-      id="authButton"
-      class="primaryButton"
-      onclick="authenticate()"
-    >
+    <h2>🔑 Anmeldung</h2>
+
+    <p>
+      Wenn du bereits registriert bist, kannst du
+      dich hier anmelden.
+    </p>
+
+    <button onclick="authenticate()">
       🔐 Bei Bauverwaltung anmelden
     </button>
 
     <div id="authResult"></div>
-
-  </div>
-
-
-  <!-- MENÜ -->
-
-  <div
-    id="mainMenu"
-    class="menu"
-    style="display:none;"
-  >
-
-    <button
-      class="menuButton"
-      onclick="showPage('booking')"
-    >
-      <span class="icon">➕</span>
-      <strong>Neue Buchung</strong>
-    </button>
-
-
-    <button
-      class="menuButton"
-      onclick="showPage('bookings')"
-    >
-      <span class="icon">📋</span>
-      <strong>Meine Buchungen</strong>
-    </button>
-
-
-    <button
-      class="menuButton"
-      onclick="showPage('evaluation')"
-    >
-      <span class="icon">📊</span>
-      <strong>Auswertung</strong>
-    </button>
-
-
-    <button
-      id="adminMenuButton"
-      class="menuButton adminButton"
-      onclick="showPage('admin')"
-      style="display:none;"
-    >
-      <span class="icon">⚙️</span>
-      <strong>Verwaltung</strong>
-    </button>
-
-  </div>
-
-
-  <!-- BUCHUNG -->
-
-  <div
-    id="bookingPage"
-    class="card"
-    style="display:none;"
-  >
-
-    <h2 id="bookingFormTitle">
-      ➕ Neue Buchung
-    </h2>
-
-
-    <div
-      id="editingNotice"
-      class="editingNotice"
-      style="display:none;"
-    >
-      ✏️ Du bearbeitest gerade eine bestehende Buchung.
-    </div>
-
-
-    <label for="project">
-      Projekt
-    </label>
-
-
-    <select id="project">
-      <option value="">
-        Projekte werden geladen...
-      </option>
-    </select>
-
-
-    <label>
-      Typ
-    </label>
-
-
-    <div class="typeButtons">
-
-      <button
-        type="button"
-        id="expenseButton"
-        class="typeButton active"
-        onclick="setBookingType('Ausgabe')"
-      >
-        💸 Ausgabe
-      </button>
-
-
-      <button
-        type="button"
-        id="incomeButton"
-        class="typeButton"
-        onclick="setBookingType('Einnahme')"
-      >
-        💰 Einnahme
-      </button>
-
-    </div>
-
-
-    <label for="category">
-      Kategorie
-    </label>
-
-
-    <select id="category">
-      <option value="">
-        Kategorien werden geladen...
-      </option>
-    </select>
-
-
-    <label for="amount">
-      Betrag (€)
-    </label>
-
-
-    <input
-      id="amount"
-      type="number"
-      inputmode="decimal"
-      step="0.01"
-      min="0"
-      placeholder="0,00"
-    >
-
-
-    <label for="description">
-      Beschreibung (optional)
-    </label>
-
-
-    <textarea
-      id="description"
-      placeholder="z. B. Baumaterial, Rechnung Nr. 123..."
-    ></textarea>
-
-
-    <button
-      id="saveBookingButton"
-      class="primaryButton"
-      onclick="saveBooking()"
-    >
-      💾 Buchung speichern
-    </button>
-
-
-    <button
-      id="cancelEditButton"
-      class="secondaryButton"
-      onclick="cancelEdit()"
-      style="display:none;"
-    >
-      ❌ Bearbeitung abbrechen
-    </button>
-
-
-    <button
-      class="secondaryButton"
-      onclick="showPage('menu')"
-    >
-      ↩️ Zurück zum Menü
-    </button>
-
-
-    <div id="bookingResult"></div>
-
-  </div>
-
-
-  <!-- MEINE BUCHUNGEN -->
-
-  <div
-    id="bookingsPage"
-    class="card"
-    style="display:none;"
-  >
-
-    <h2>📋 Meine Buchungen</h2>
-
-
-    <div id="bookingsList">
-      <div class="info">
-        ⏳ Buchungen werden geladen...
-      </div>
-    </div>
-
-
-    <button
-      class="secondaryButton"
-      onclick="loadBookings()"
-    >
-      🔄 Aktualisieren
-    </button>
-
-
-    <button
-      class="secondaryButton"
-      onclick="showPage('menu')"
-    >
-      ↩️ Zurück zum Menü
-    </button>
-
-  </div>
-
-
-  <!-- AUSWERTUNG -->
-
-  <div
-    id="evaluationPage"
-    class="card"
-    style="display:none;"
-  >
-
-    <h2>📊 Auswertung</h2>
-
-
-    <div class="filterBox">
-
-      <h3>🔎 Filter</h3>
-
-
-      <label for="evaluationPeriod">
-        Zeitraum
-      </label>
-
-
-      <select
-        id="evaluationPeriod"
-        onchange="handlePeriodChange()"
-      >
-
-        <option value="all">
-          Alle
-        </option>
-
-        <option value="currentMonth">
-          Dieser Monat
-        </option>
-
-        <option value="lastMonth">
-          Letzter Monat
-        </option>
-
-        <option value="currentYear">
-          Dieses Jahr
-        </option>
-
-        <option value="custom">
-          Benutzerdefiniert
-        </option>
-
-      </select>
-
-
-      <div
-        id="customDateRange"
-        class="dateRange"
-      >
-
-        <label for="startDate">
-          Von
-        </label>
-
-        <input
-          id="startDate"
-          type="date"
-        >
-
-
-        <label for="endDate">
-          Bis
-        </label>
-
-        <input
-          id="endDate"
-          type="date"
-        >
-
-      </div>
-
-
-      <label for="evaluationProject">
-        Projekt
-      </label>
-
-
-      <select id="evaluationProject">
-
-        <option value="">
-          Alle Projekte
-        </option>
-
-      </select>
-
-
-      <label for="evaluationType">
-        Typ
-      </label>
-
-
-      <select id="evaluationType">
-
-        <option value="Alle">
-          Einnahmen und Ausgaben
-        </option>
-
-        <option value="Ausgabe">
-          Nur Ausgaben
-        </option>
-
-        <option value="Einnahme">
-          Nur Einnahmen
-        </option>
-
-      </select>
-
-
-      <button
-        class="primaryButton"
-        onclick="loadEvaluation()"
-      >
-        🔎 Auswertung anzeigen
-      </button>
-
-
-      <button
-        class="resetButton"
-        onclick="resetEvaluationFilters()"
-      >
-        ↩️ Filter zurücksetzen
-      </button>
-
-    </div>
-
-
-    <div id="evaluationContent">
-
-      <div class="info">
-        ⏳ Auswertung wird geladen...
-      </div>
-
-    </div>
-
-
-    <button
-      class="secondaryButton"
-      onclick="showPage('menu')"
-    >
-      ↩️ Zurück zum Menü
-    </button>
-
-  </div>
-
-
-  <!-- VERWALTUNG -->
-
-  <div
-    id="adminPage"
-    class="card"
-    style="display:none;"
-  >
-
-    <h2>⚙️ Verwaltung</h2>
-
-
-    <!-- BENUTZER -->
-
-    <div class="adminSection">
-
-      <button
-        class="adminSectionButton"
-        onclick="showAdminSection('users')"
-      >
-        👥 Benutzerverwaltung
-      </button>
-
-
-      <div
-        id="usersAdminSection"
-        style="display:none;"
-      >
-
-
-        <!-- EINLADUNG -->
-
-        <div class="invitationBox">
-
-          <h3>
-            👤 Benutzer einladen
-          </h3>
-
-          <p class="info">
-            Erstelle einen persönlichen Einladungslink für einen neuen Benutzer.
-          </p>
-
-
-          <button
-            id="createInvitationButton"
-            class="primaryButton"
-            onclick="createInvitation()"
-          >
-            🔗 Einladungslink erstellen
-          </button>
-
-
-          <div
-            id="invitationResult"
-            style="margin-top:15px;"
-          ></div>
-
-
-          <div
-            id="invitationLinkBox"
-            class="invitationLink"
-          >
-
-            <label>
-              Einladungslink
-            </label>
-
-
-            <input
-              id="invitationLink"
-              type="text"
-              readonly
-            >
-
-
-            <button
-              class="copyButton"
-              onclick="copyInvitationLink()"
-            >
-              📋 Link kopieren
-            </button>
-
-
-            <button
-              class="telegramButton"
-              onclick="openInvitationLink()"
-            >
-              ✈️ Link in Telegram öffnen
-            </button>
-
-
-            <div
-              id="invitationCode"
-              class="invitationCode"
-            ></div>
-
-          </div>
-
-        </div>
-
-
-        <!-- BENUTZERLISTE -->
-
-        <div
-          id="usersAdminList"
-          class="adminList"
-        >
-
-          <div class="info">
-            ⏳ Benutzer werden geladen...
-          </div>
-
-        </div>
-
-
-        <button
-          class="secondaryButton"
-          onclick="loadUsers()"
-        >
-          🔄 Benutzer aktualisieren
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- PROJEKTE -->
-
-    <div class="adminSection">
-
-      <button
-        class="adminSectionButton"
-        onclick="showAdminSection('projects')"
-      >
-        🏠 Projektverwaltung
-      </button>
-
-
-      <div
-        id="projectsAdminSection"
-        style="display:none;"
-      >
-
-        <p class="info">
-          Die Projektverwaltung wird im nächsten Schritt eingerichtet.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <!-- KATEGORIEN -->
-
-    <div class="adminSection">
-
-      <button
-        class="adminSectionButton"
-        onclick="showAdminSection('categories')"
-      >
-        📂 Kategorienverwaltung
-      </button>
-
-
-      <div
-        id="categoriesAdminSection"
-        style="display:none;"
-      >
-
-        <p class="info">
-          Die Kategorienverwaltung wird im nächsten Schritt eingerichtet.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="secondaryButton"
-      onclick="showPage('menu')"
-    >
-      ↩️ Zurück zum Menü
-    </button>
 
   </div>
 
@@ -1096,9 +194,10 @@
     const tg =
       window.Telegram.WebApp;
 
-    tg.ready();
 
+    tg.ready();
     tg.expand();
+
 
 
     // =========================================
@@ -1109,30 +208,39 @@
       "https://script.google.com/macros/s/AKfycbytTS_UdYyX0d_I05hTW6l8-YXb3WT1g1PD4BqF-AeGqipgYQJYYRFKhVyPXQyHlPxx/exec";
 
 
+
     // =========================================
-    // VARIABLEN
+    // ELEMENTE
     // =========================================
 
-    let projects = [];
+    const status =
+      document.getElementById(
+        "status"
+      );
 
-    let categories = [];
 
-    let bookingType = "Ausgabe";
+    const userCard =
+      document.getElementById(
+        "userCard"
+      );
 
-    let editingBookingId = null;
 
-    let currentUser = null;
+    const registrationCard =
+      document.getElementById(
+        "registrationCard"
+      );
 
-    let currentInvitationLink = "";
+
+    const loginCard =
+      document.getElementById(
+        "loginCard"
+      );
+
 
 
     // =========================================
     // TELEGRAM PRÜFEN
     // =========================================
-
-    const status =
-      document.getElementById("status");
-
 
     if (!tg.initData) {
 
@@ -1159,10 +267,8 @@
 
       if (user) {
 
-        document
-          .getElementById("userCard")
-          .style.display =
-            "block";
+        userCard.style.display =
+          "block";
 
 
         document
@@ -1177,17 +283,268 @@
 
 
         document
-          .getElementById("loginCard")
-          .style.display =
-            "block";
+          .getElementById("username")
+          .textContent =
+            user.username
+              ? "@" + user.username
+              : "kein Username";
+
+
+        document
+          .getElementById("id")
+          .textContent =
+            user.id;
+
+      }
+
+
+      // =======================================
+      // EINLADUNGSCODE ERMITTELN
+      // =======================================
+
+      const invitationCode =
+        getInvitationCode();
+
+
+      if (invitationCode) {
+
+        registrationCard.style.display =
+          "block";
+
+      } else {
+
+        loginCard.style.display =
+          "block";
 
       }
 
     }
 
 
+
     // =========================================
-    // AUTHENTIFIZIERUNG
+    // EINLADUNGSCODE AUS STARTAPP
+    // =========================================
+
+    function getInvitationCode() {
+
+      try {
+
+        const startParam =
+          tg.initDataUnsafe
+            .start_param;
+
+
+        if (
+          startParam &&
+          startParam.trim() !== ""
+        ) {
+
+          return startParam.trim();
+
+        }
+
+
+        // Fallback für Telegram-Versionen,
+        // die start_param nicht liefern
+
+        const params =
+          new URLSearchParams(
+            tg.initData
+          );
+
+
+        const startParamFromData =
+          params.get(
+            "start_param"
+          );
+
+
+        if (
+          startParamFromData &&
+          startParamFromData.trim() !== ""
+        ) {
+
+          return startParamFromData.trim();
+
+        }
+
+
+        return null;
+
+      } catch (error) {
+
+        console.error(
+          "Fehler beim Lesen des Einladungscodes:",
+          error
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+
+    // =========================================
+    // REGISTRIEREN
+    // =========================================
+
+    async function registerUser() {
+
+      const passwordInput =
+        document.getElementById(
+          "registrationPassword"
+        );
+
+
+      const button =
+        document.getElementById(
+          "registrationButton"
+        );
+
+
+      const result =
+        document.getElementById(
+          "registrationResult"
+        );
+
+
+      const password =
+        passwordInput.value.trim();
+
+
+      const invitationCode =
+        getInvitationCode();
+
+
+      if (!password) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          '❌ Bitte Passwort eingeben.' +
+          '</span>';
+
+        return;
+
+      }
+
+
+      if (!invitationCode) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          '❌ Kein gültiger Einladungscode gefunden.' +
+          '</span>';
+
+        return;
+
+      }
+
+
+      button.disabled =
+        true;
+
+
+      result.innerHTML =
+        "⏳ Registrierung läuft...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "text/plain"
+              },
+
+              body:
+                JSON.stringify({
+
+                  action:
+                    "registerUser",
+
+                  initData:
+                    tg.initData,
+
+                  invitationCode:
+                    invitationCode,
+
+                  password:
+                    password
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (data.ok) {
+
+          result.innerHTML =
+            '<span class="success">' +
+            '<strong>✅ Registrierung erfolgreich!</strong>' +
+            '<br><br>' +
+            '👤 ' +
+            data.user.first_name +
+            ' ' +
+            data.user.last_name +
+            '<br>' +
+            '🔑 Rolle: ' +
+            data.user.role +
+            '<br><br>' +
+            'Du kannst die Bauverwaltung jetzt verwenden.' +
+            '</span>';
+
+
+          passwordInput.value =
+            "";
+
+
+        } else {
+
+          result.innerHTML =
+            '<span class="error">' +
+            '❌ Registrierung fehlgeschlagen:<br>' +
+            data.error +
+            '</span>';
+
+
+          button.disabled =
+            false;
+
+        }
+
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          '❌ Verbindungsfehler:<br>' +
+          error +
+          '</span>';
+
+
+        button.disabled =
+          false;
+
+      }
+
+    }
+
+
+
+    // =========================================
+    // BESTEHENDE AUTHENTIFIZIERUNG
     // =========================================
 
     async function authenticate() {
@@ -1196,15 +553,6 @@
         document.getElementById(
           "authResult"
         );
-
-
-      const button =
-        document.getElementById(
-          "authButton"
-        );
-
-
-      button.disabled = true;
 
 
       result.innerHTML =
@@ -1220,8 +568,7 @@
               method: "POST",
 
               headers: {
-                "Content-Type":
-                  "text/plain"
+                "Content-Type": "text/plain"
               },
 
               body:
@@ -1234,6 +581,7 @@
                     tg.initData
 
                 })
+
             }
           );
 
@@ -1242,2533 +590,46 @@
           await response.json();
 
 
-        if (!data.ok) {
+        if (data.ok) {
 
-          throw new Error(
-            data.error
-          );
+          result.innerHTML =
+            '<span class="success">' +
+            "✅ Authentifiziert<br><br>" +
+            "👤 " +
+            data.user.first_name +
+            " " +
+            data.user.last_name +
+            "<br>" +
+            "🔑 Rolle: " +
+            data.user.role +
+            "</span>";
 
-        }
+        } else {
 
-
-        currentUser =
-          data.user;
-
-
-        document
-          .getElementById("role")
-          .textContent =
-            currentUser.role;
-
-
-        document
-          .getElementById("loginCard")
-          .style.display =
-            "none";
-
-
-        document
-          .getElementById("mainMenu")
-          .style.display =
-            "block";
-
-
-        if (
-          String(
-            currentUser.role
-          )
-            .trim()
-            .toLowerCase() ===
-          "admin"
-        ) {
-
-          document
-            .getElementById(
-              "adminMenuButton"
-            )
-            .style.display =
-              "block";
+          result.innerHTML =
+            '<span class="error">' +
+            "❌ Authentifizierung fehlgeschlagen:<br>" +
+            data.error +
+            "</span>";
 
         }
-
-
-        await loadProjects();
-
-        await loadCategories();
-
-        await loadBookings();
-
-
-        showPage("menu");
 
 
       } catch (error) {
 
         result.innerHTML =
           '<span class="error">' +
-          "❌ Authentifizierung fehlgeschlagen:<br>" +
+          "❌ Verbindungsfehler:<br>" +
           error +
           "</span>";
 
-
-        button.disabled = false;
-
       }
 
     }
-
-
-    // =========================================
-    // SEITENNAVIGATION
-    // =========================================
-
-    function showPage(page) {
-
-
-      document
-        .getElementById("bookingPage")
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById("bookingsPage")
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById("evaluationPage")
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById("adminPage")
-        .style.display =
-          "none";
-
-
-      if (page === "menu") {
-        return;
-      }
-
-
-      if (page === "booking") {
-
-        document
-          .getElementById("bookingPage")
-          .style.display =
-            "block";
-
-      }
-
-
-      if (page === "bookings") {
-
-        document
-          .getElementById("bookingsPage")
-          .style.display =
-            "block";
-
-
-        loadBookings();
-
-      }
-
-
-      if (page === "evaluation") {
-
-        document
-          .getElementById("evaluationPage")
-          .style.display =
-            "block";
-
-
-        populateEvaluationProjects();
-
-        loadEvaluation();
-
-      }
-
-
-      if (page === "admin") {
-
-
-        if (
-          !currentUser ||
-          String(
-            currentUser.role
-          )
-            .trim()
-            .toLowerCase() !==
-          "admin"
-        ) {
-
-          alert(
-            "❌ Keine Berechtigung."
-          );
-
-          return;
-
-        }
-
-
-        document
-          .getElementById("adminPage")
-          .style.display =
-            "block";
-
-      }
-
-    }
-
-
-    // =========================================
-    // ADMIN-BEREICH
-    // =========================================
-
-    function showAdminSection(
-      section
-    ) {
-
-
-      document
-        .getElementById(
-          "usersAdminSection"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "projectsAdminSection"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "categoriesAdminSection"
-        )
-        .style.display =
-          "none";
-
-
-      if (section === "users") {
-
-        document
-          .getElementById(
-            "usersAdminSection"
-          )
-          .style.display =
-            "block";
-
-
-        loadUsers();
-
-      }
-
-
-      if (section === "projects") {
-
-        document
-          .getElementById(
-            "projectsAdminSection"
-          )
-          .style.display =
-            "block";
-
-      }
-
-
-      if (section === "categories") {
-
-        document
-          .getElementById(
-            "categoriesAdminSection"
-          )
-          .style.display =
-            "block";
-
-      }
-
-    }
-
-
-    // =========================================
-    // EINLADUNG ERSTELLEN
-    // =========================================
-
-    async function createInvitation() {
-
-
-      const button =
-        document.getElementById(
-          "createInvitationButton"
-        );
-
-
-      const result =
-        document.getElementById(
-          "invitationResult"
-        );
-
-
-      const linkBox =
-        document.getElementById(
-          "invitationLinkBox"
-        );
-
-
-      button.disabled = true;
-
-
-      result.innerHTML =
-        '<span class="info">' +
-        "⏳ Einladungslink wird erstellt..." +
-        "</span>";
-
-
-      linkBox.style.display =
-        "none";
-
-
-      try {
-
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "createInvitation",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        currentInvitationLink =
-          data.link;
-
-
-        document
-          .getElementById(
-            "invitationLink"
-          )
-          .value =
-            data.link;
-
-
-        document
-          .getElementById(
-            "invitationCode"
-          )
-          .textContent =
-            "Code: " +
-            data.code;
-
-
-        linkBox.style.display =
-          "block";
-
-
-        result.innerHTML =
-          '<span class="success">' +
-          "✅ Einladungslink wurde erstellt." +
-          "</span>";
-
-
-      } catch (error) {
-
-
-        result.innerHTML =
-          '<span class="error">' +
-          "❌ Einladung konnte nicht erstellt werden.<br>" +
-          escapeHtml(
-            error.message
-          ) +
-          "</span>";
-
-      }
-
-
-      button.disabled = false;
-
-    }
-
-
-    // =========================================
-    // EINLADUNG KOPIEREN
-    // =========================================
-
-    async function copyInvitationLink() {
-
-
-      if (!currentInvitationLink) {
-
-        return;
-
-      }
-
-
-      try {
-
-        await navigator.clipboard.writeText(
-          currentInvitationLink
-        );
-
-
-        alert(
-          "✅ Einladungslink wurde kopiert."
-        );
-
-
-      } catch (error) {
-
-        const input =
-          document.getElementById(
-            "invitationLink"
-          );
-
-
-        input.select();
-
-        document.execCommand(
-          "copy"
-        );
-
-
-        alert(
-          "✅ Einladungslink wurde kopiert."
-        );
-
-      }
-
-    }
-
-
-    // =========================================
-    // TELEGRAM LINK ÖFFNEN
-    // =========================================
-
-    function openInvitationLink() {
-
-
-      if (!currentInvitationLink) {
-
-        return;
-
-      }
-
-
-      window.open(
-        currentInvitationLink,
-        "_blank"
-      );
-
-    }
-
-
-    // =========================================
-    // BENUTZER LADEN
-    // =========================================
-
-    async function loadUsers() {
-
-
-      const list =
-        document.getElementById(
-          "usersAdminList"
-        );
-
-
-      list.innerHTML =
-        '<div class="info">' +
-        "⏳ Benutzer werden geladen..." +
-        "</div>";
-
-
-      try {
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getUsers",
-
-                  initData:
-                    tg.initData
-
-                })
-
-              }
-
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        displayUsers(
-          data.users || []
-        );
-
-
-      } catch (error) {
-
-        list.innerHTML =
-          '<div class="error">' +
-          "❌ Benutzer konnten nicht geladen werden.<br><br>" +
-          escapeHtml(
-            error.message
-          ) +
-          "</div>";
-
-      }
-
-    }
-
-
-    // =========================================
-    // BENUTZER DARSTELLEN
-    // =========================================
-
-    function displayUsers(
-      users
-    ) {
-
-
-      const list =
-        document.getElementById(
-          "usersAdminList"
-        );
-
-
-      if (!users.length) {
-
-        list.innerHTML =
-          '<div class="emptyBookings">' +
-          "Keine Benutzer vorhanden." +
-          "</div>";
-
-        return;
-
-      }
-
-
-      list.innerHTML = "";
-
-
-      users.forEach(
-        user => {
-
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-
-          item.className =
-            "adminUser";
-
-
-          const fullName =
-            (
-              user.first_name +
-              " " +
-              user.last_name
-            ).trim();
-
-
-          const isCurrentUser =
-            String(user.id) ===
-            String(currentUser.id);
-
-
-          let actionsHtml = "";
-
-
-          if (isCurrentUser) {
-
-            actionsHtml =
-              '<div class="selfUserNotice">' +
-              "🔒 Deine eigene Rolle kann nicht geändert werden." +
-              "</div>";
-
-          } else {
-
-            actionsHtml =
-
-              '<div class="adminUserActions">' +
-
-                '<label>' +
-                  "Rolle" +
-                "</label>" +
-
-                '<select id="role_' +
-                  escapeHtml(
-                    user.id
-                  ) +
-                '">' +
-
-                  '<option value="Benutzer"' +
-                    (
-                      user.role ===
-                      "Benutzer"
-                        ? " selected"
-                        : ""
-                    ) +
-                  '>' +
-                    "Benutzer" +
-                  "</option>" +
-
-                  '<option value="Admin"' +
-                    (
-                      user.role ===
-                      "Admin"
-                        ? " selected"
-                        : ""
-                    ) +
-                  '>' +
-                    "Admin" +
-                  "</option>" +
-
-                "</select>" +
-
-                '<button ' +
-                  'class="roleSaveButton" ' +
-                  'onclick="changeUserRole(\'' +
-                  escapeHtml(
-                    user.id
-                  ) +
-                  '\')">' +
-                  "💾 Rolle speichern" +
-                "</button>" +
-
-              "</div>";
-
-          }
-
-
-          item.innerHTML =
-
-            '<div class="adminUserHeader">' +
-
-              '<div class="adminUserName">' +
-                "👤 " +
-                escapeHtml(
-                  fullName
-                ) +
-              "</div>" +
-
-              '<div class="adminUserRole">' +
-                escapeHtml(
-                  user.role
-                ) +
-              "</div>" +
-
-            "</div>" +
-
-
-            '<div class="adminUserDetails">' +
-              "Telegram ID: " +
-              escapeHtml(
-                user.id
-              ) +
-            "</div>" +
-
-
-            actionsHtml;
-
-
-          list.appendChild(
-            item
-          );
-
-        }
-      );
-
-    }
-
-
-    // =========================================
-    // ROLLE ÄNDERN
-    // =========================================
-
-    async function changeUserRole(
-      userId
-    ) {
-
-
-      const select =
-        document.getElementById(
-          "role_" + userId
-        );
-
-
-      if (!select) {
-
-        return;
-
-      }
-
-
-      const newRole =
-        select.value;
-
-
-      if (
-        !confirm(
-          "Möchtest du die Rolle dieses Benutzers wirklich auf \"" +
-          newRole +
-          "\" ändern?"
-        )
-      ) {
-
-        return;
-
-      }
-
-
-      try {
-
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "updateUserRole",
-
-                  initData:
-                    tg.initData,
-
-                  userId:
-                    userId,
-
-                  newRole:
-                    newRole
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        alert(
-          "✅ Rolle erfolgreich geändert."
-        );
-
-
-        await loadUsers();
-
-
-      } catch (error) {
-
-
-        alert(
-          "❌ Rolle konnte nicht geändert werden.\n\n" +
-          error.message
-        );
-
-      }
-
-    }
-
-
-    // =========================================
-    // PROJEKTE LADEN
-    // =========================================
-
-    async function loadProjects() {
-
-      try {
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getProjects",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        projects =
-          data.projects || [];
-
-
-        const select =
-          document.getElementById(
-            "project"
-          );
-
-
-        select.innerHTML =
-          '<option value="">' +
-          "Projekt auswählen..." +
-          "</option>";
-
-
-        projects.forEach(
-          project => {
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            option.value =
-              project.id;
-
-
-            option.textContent =
-              project.name;
-
-
-            select.appendChild(
-              option
-            );
-
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Projektfehler:",
-          error
-        );
-
-      }
-
-    }
-
-
-    // =========================================
-    // KATEGORIEN LADEN
-    // =========================================
-
-    async function loadCategories() {
-
-      try {
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getCategories",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        categories =
-          data.categories || [];
-
-
-        updateCategoryList();
-
-
-      } catch (error) {
-
-        console.error(
-          "Kategoriefehler:",
-          error
-        );
-
-      }
-
-    }
-
-
-    // =========================================
-    // BUCHUNGSTYP
-    // =========================================
-
-    function setBookingType(
-      type
-    ) {
-
-      bookingType =
-        type;
-
-
-      document
-        .getElementById(
-          "expenseButton"
-        )
-        .classList
-        .toggle(
-          "active",
-          type === "Ausgabe"
-        );
-
-
-      document
-        .getElementById(
-          "incomeButton"
-        )
-        .classList
-        .toggle(
-          "active",
-          type === "Einnahme"
-        );
-
-
-      updateCategoryList();
-
-    }
-
-
-    // =========================================
-    // KATEGORIEN
-    // =========================================
-
-    function updateCategoryList(
-      selectedCategory = ""
-    ) {
-
-      const select =
-        document.getElementById(
-          "category"
-        );
-
-
-      select.innerHTML =
-        '<option value="">' +
-        "Kategorie auswählen..." +
-        "</option>";
-
-
-      categories
-
-        .filter(
-          category =>
-            category.type ===
-            bookingType
-        )
-
-        .forEach(
-          category => {
-
-            const option =
-              document.createElement(
-                "option"
-              );
-
-
-            option.value =
-              category.name;
-
-
-            option.textContent =
-              category.name;
-
-
-            if (
-              category.name ===
-              selectedCategory
-            ) {
-
-              option.selected =
-                true;
-
-            }
-
-
-            select.appendChild(
-              option
-            );
-
-          }
-        );
-
-    }
-
-
-    // =========================================
-    // BUCHUNG SPEICHERN
-    // =========================================
-
-    async function saveBooking() {
-
-
-      const projectId =
-        document
-          .getElementById("project")
-          .value;
-
-
-      const category =
-        document
-          .getElementById("category")
-          .value;
-
-
-      const amount =
-        document
-          .getElementById("amount")
-          .value;
-
-
-      const description =
-        document
-          .getElementById("description")
-          .value
-          .trim();
-
-
-      const result =
-        document
-          .getElementById("bookingResult");
-
-
-      if (!projectId) {
-
-        result.innerHTML =
-          '<span class="error">' +
-          "❌ Bitte ein Projekt auswählen." +
-          "</span>";
-
-        return;
-
-      }
-
-
-      if (!category) {
-
-        result.innerHTML =
-          '<span class="error">' +
-          "❌ Bitte eine Kategorie auswählen." +
-          "</span>";
-
-        return;
-
-      }
-
-
-      if (
-        !amount ||
-        Number(amount) <= 0
-      ) {
-
-        result.innerHTML =
-          '<span class="error">' +
-          "❌ Bitte einen gültigen Betrag eingeben." +
-          "</span>";
-
-        return;
-
-      }
-
-
-      try {
-
-        const action =
-          editingBookingId
-            ? "updateBooking"
-            : "createBooking";
-
-
-        const booking = {
-
-          projectId:
-            projectId,
-
-          type:
-            bookingType,
-
-          category:
-            category,
-
-          amount:
-            amount,
-
-          description:
-            description
-
-        };
-
-
-        if (editingBookingId) {
-
-          booking.id =
-            editingBookingId;
-
-        }
-
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    action,
-
-                  initData:
-                    tg.initData,
-
-                  booking:
-                    booking
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        result.innerHTML =
-          '<span class="success">' +
-          "✅ Buchung erfolgreich gespeichert." +
-          "</span>";
-
-
-        cancelEdit();
-
-
-        await loadBookings();
-
-
-      } catch (error) {
-
-        result.innerHTML =
-          '<span class="error">' +
-          "❌ Fehler:<br>" +
-          error.message +
-          "</span>";
-
-      }
-
-    }
-
-
-    // =========================================
-    // BUCHUNGEN LADEN
-    // =========================================
-
-    async function loadBookings() {
-
-
-      const list =
-        document.getElementById(
-          "bookingsList"
-        );
-
-
-      if (!list) {
-        return;
-      }
-
-
-      list.innerHTML =
-        '<div class="info">' +
-        "⏳ Buchungen werden geladen..." +
-        "</div>";
-
-
-      try {
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getBookings",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        displayBookings(
-          data.bookings || []
-        );
-
-
-      } catch (error) {
-
-        list.innerHTML =
-          '<div class="error">' +
-          "❌ Buchungen konnten nicht geladen werden.<br><br>" +
-          escapeHtml(
-            error.message
-          ) +
-          "</div>";
-
-      }
-
-    }
-
-
-    // =========================================
-    // BUCHUNGEN DARSTELLEN
-    // =========================================
-
-    function displayBookings(
-      bookings
-    ) {
-
-
-      const list =
-        document.getElementById(
-          "bookingsList"
-        );
-
-
-      if (!bookings.length) {
-
-        list.innerHTML =
-          '<div class="emptyBookings">' +
-          "Noch keine Buchungen vorhanden." +
-          "</div>";
-
-        return;
-
-      }
-
-
-      list.innerHTML = "";
-
-
-      bookings.forEach(
-        booking => {
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-
-          item.className =
-            "booking";
-
-
-          const amount =
-            Number(
-              booking.amount
-            ).toLocaleString(
-              "de-DE",
-              {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              }
-            );
-
-
-          const isIncome =
-            booking.type ===
-            "Einnahme";
-
-
-          item.innerHTML =
-
-            '<div class="bookingHeader">' +
-
-              '<div class="bookingCategory">' +
-                (
-                  isIncome
-                    ? "💰"
-                    : "💸"
-                ) +
-                " " +
-                escapeHtml(
-                  booking.category
-                ) +
-              "</div>" +
-
-              '<div class="bookingAmount ' +
-                (
-                  isIncome
-                    ? "income"
-                    : "expense"
-                ) +
-              '">' +
-
-                (
-                  isIncome
-                    ? "+"
-                    : "-"
-                ) +
-
-                amount +
-
-                " €" +
-
-              "</div>" +
-
-            "</div>" +
-
-
-            '<div class="bookingDetails">' +
-
-              escapeHtml(
-                booking.date
-              ) +
-
-              " · " +
-
-              escapeHtml(
-                booking.time
-              ) +
-
-              "<br>" +
-
-              "Projekt: " +
-
-              escapeHtml(
-                getProjectName(
-                  booking.projectId
-                )
-              ) +
-
-            "</div>" +
-
-
-            (
-              booking.description
-                ? '<div class="bookingDescription">' +
-                  escapeHtml(
-                    booking.description
-                  ) +
-                  "</div>"
-                : ""
-            ) +
-
-
-            '<div class="bookingActions">' +
-
-              '<button ' +
-                'class="editButton" ' +
-                'onclick=\'editBooking(' +
-                JSON.stringify(booking)
-                  .replace(
-                    /'/g,
-                    "&#39;"
-                  ) +
-                ")\'>" +
-                "✏️ Bearbeiten" +
-              "</button>" +
-
-
-              '<button ' +
-                'class="deleteButton" ' +
-                'onclick="deleteBooking(\'' +
-                escapeHtml(
-                  booking.id
-                ) +
-                "')\">" +
-                "🗑️ Löschen" +
-              "</button>" +
-
-            "</div>";
-
-
-          list.appendChild(
-            item
-          );
-
-        }
-      );
-
-    }
-
-
-    // =========================================
-    // AUSWERTUNG PROJEKTE
-    // =========================================
-
-    function populateEvaluationProjects() {
-
-
-      const select =
-        document.getElementById(
-          "evaluationProject"
-        );
-
-
-      const currentValue =
-        select.value;
-
-
-      select.innerHTML =
-        '<option value="">' +
-        "Alle Projekte" +
-        "</option>";
-
-
-      projects.forEach(
-        project => {
-
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          option.value =
-            project.id;
-
-
-          option.textContent =
-            project.name;
-
-
-          select.appendChild(
-            option
-          );
-
-        }
-      );
-
-
-      if (
-        projects.some(
-          project =>
-            String(project.id) ===
-            String(currentValue)
-        )
-      ) {
-
-        select.value =
-          currentValue;
-
-      }
-
-    }
-
-
-    // =========================================
-    // ZEITRAUM
-    // =========================================
-
-    function handlePeriodChange() {
-
-
-      const period =
-        document
-          .getElementById(
-            "evaluationPeriod"
-          )
-          .value;
-
-
-      const customRange =
-        document.getElementById(
-          "customDateRange"
-        );
-
-
-      if (
-        period === "custom"
-      ) {
-
-        customRange
-          .classList
-          .add("visible");
-
-      } else {
-
-        customRange
-          .classList
-          .remove("visible");
-
-      }
-
-    }
-
-
-    // =========================================
-    // DATUM
-    // =========================================
-
-    function formatDateForApi(
-      date
-    ) {
-
-
-      const year =
-        date.getFullYear();
-
-
-      const month =
-        String(
-          date.getMonth() + 1
-        ).padStart(
-          2,
-          "0"
-        );
-
-
-      const day =
-        String(
-          date.getDate()
-        ).padStart(
-          2,
-          "0"
-        );
-
-
-      return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-      );
-
-    }
-
-
-    // =========================================
-    // AUSWERTUNGSFILTER
-    // =========================================
-
-    function getEvaluationFilters() {
-
-
-      const period =
-        document
-          .getElementById(
-            "evaluationPeriod"
-          )
-          .value;
-
-
-      const project =
-        document
-          .getElementById(
-            "evaluationProject"
-          )
-          .value;
-
-
-      const type =
-        document
-          .getElementById(
-            "evaluationType"
-          )
-          .value;
-
-
-      let startDate = null;
-
-      let endDate = null;
-
-
-      const now =
-        new Date();
-
-
-      if (
-        period ===
-        "currentMonth"
-      ) {
-
-        const start =
-          new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            1
-          );
-
-
-        const end =
-          new Date(
-            now.getFullYear(),
-            now.getMonth() + 1,
-            0
-          );
-
-
-        startDate =
-          formatDateForApi(
-            start
-          );
-
-
-        endDate =
-          formatDateForApi(
-            end
-          );
-
-      }
-
-
-      if (
-        period ===
-        "lastMonth"
-      ) {
-
-        const start =
-          new Date(
-            now.getFullYear(),
-            now.getMonth() - 1,
-            1
-          );
-
-
-        const end =
-          new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            0
-          );
-
-
-        startDate =
-          formatDateForApi(
-            start
-          );
-
-
-        endDate =
-          formatDateForApi(
-            end
-          );
-
-      }
-
-
-      if (
-        period ===
-        "currentYear"
-      ) {
-
-        const start =
-          new Date(
-            now.getFullYear(),
-            0,
-            1
-          );
-
-
-        const end =
-          new Date(
-            now.getFullYear(),
-            11,
-            31
-          );
-
-
-        startDate =
-          formatDateForApi(
-            start
-          );
-
-
-        endDate =
-          formatDateForApi(
-            end
-          );
-
-      }
-
-
-      if (
-        period ===
-        "custom"
-      ) {
-
-        startDate =
-          document
-            .getElementById(
-              "startDate"
-            )
-            .value ||
-          null;
-
-
-        endDate =
-          document
-            .getElementById(
-              "endDate"
-            )
-            .value ||
-          null;
-
-      }
-
-
-      return {
-
-        project:
-          project,
-
-        type:
-          type,
-
-        startDate:
-          startDate,
-
-        endDate:
-          endDate
-
-      };
-
-    }
-
-
-    // =========================================
-    // AUSWERTUNG LADEN
-    // =========================================
-
-    async function loadEvaluation() {
-
-
-      const content =
-        document.getElementById(
-          "evaluationContent"
-        );
-
-
-      content.innerHTML =
-        '<div class="info">' +
-        "⏳ Auswertung wird geladen..." +
-        "</div>";
-
-
-      try {
-
-        const filters =
-          getEvaluationFilters();
-
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getEvaluation",
-
-                  initData:
-                    tg.initData,
-
-                  filters:
-                    filters
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        displayEvaluation(
-          data.evaluation
-        );
-
-
-      } catch (error) {
-
-        content.innerHTML =
-          '<div class="error">' +
-          "❌ Auswertung konnte nicht geladen werden.<br><br>" +
-          escapeHtml(
-            error.message
-          ) +
-          "</div>";
-
-      }
-
-    }
-
-
-    // =========================================
-    // FILTER RESET
-    // =========================================
-
-    function resetEvaluationFilters() {
-
-
-      document
-        .getElementById(
-          "evaluationPeriod"
-        )
-        .value =
-          "all";
-
-
-      document
-        .getElementById(
-          "evaluationProject"
-        )
-        .value =
-          "";
-
-
-      document
-        .getElementById(
-          "evaluationType"
-        )
-        .value =
-          "Alle";
-
-
-      document
-        .getElementById(
-          "startDate"
-        )
-        .value =
-          "";
-
-
-      document
-        .getElementById(
-          "endDate"
-        )
-        .value =
-          "";
-
-
-      handlePeriodChange();
-
-      loadEvaluation();
-
-    }
-
-
-    // =========================================
-    // AUSWERTUNG DARSTELLEN
-    // =========================================
-
-    function displayEvaluation(
-      evaluation
-    ) {
-
-
-      const content =
-        document.getElementById(
-          "evaluationContent"
-        );
-
-
-      const expenses =
-        Number(
-          evaluation.totalExpenses
-        ) || 0;
-
-
-      const income =
-        Number(
-          evaluation.totalIncome
-        ) || 0;
-
-
-      const balance =
-        Number(
-          evaluation.balance
-        ) || 0;
-
-
-      const formatMoney =
-        value =>
-          Number(
-            value
-          ).toLocaleString(
-            "de-DE",
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            }
-          ) + " €";
-
-
-      const balanceClass =
-        balance >= 0
-          ? "evaluationPositive"
-          : "evaluationNegative";
-
-
-      let html = "";
-
-
-      html +=
-        '<div class="evaluationCards">' +
-
-          '<div class="evaluationCard">' +
-
-            '<div class="evaluationTitle">' +
-              "💸 Ausgaben" +
-            "</div>" +
-
-            '<div class="evaluationValue evaluationExpense">' +
-              formatMoney(expenses) +
-            "</div>" +
-
-          "</div>" +
-
-
-          '<div class="evaluationCard">' +
-
-            '<div class="evaluationTitle">' +
-              "💰 Einnahmen" +
-            "</div>" +
-
-            '<div class="evaluationValue evaluationIncome">' +
-              formatMoney(income) +
-            "</div>" +
-
-          "</div>" +
-
-
-          '<div class="evaluationCard full">' +
-
-            '<div class="evaluationTitle">' +
-              "📈 Saldo" +
-            "</div>" +
-
-            '<div class="evaluationValue ' +
-              balanceClass +
-            '">' +
-
-              (
-                balance >= 0
-                  ? "+"
-                  : ""
-              ) +
-
-              formatMoney(balance) +
-
-            "</div>" +
-
-          "</div>" +
-
-        "</div>";
-
-
-      html +=
-        '<div class="evaluationSection">' +
-          "<h3>📂 Nach Kategorie</h3>";
-
-
-      const categoryData =
-        evaluation.byCategory || {};
-
-
-      const categoryEntries =
-        Object.entries(
-          categoryData
-        );
-
-
-      if (!categoryEntries.length) {
-
-        html +=
-          '<div class="evaluationEmpty">' +
-          "Keine Daten vorhanden." +
-          "</div>";
-
-      } else {
-
-        categoryEntries
-          .sort(
-            (a, b) =>
-              b[1] - a[1]
-          )
-          .forEach(
-            ([name, value]) => {
-
-              html +=
-                '<div class="evaluationRow">' +
-
-                  '<div class="evaluationRowName">' +
-                    escapeHtml(name) +
-                  "</div>" +
-
-                  '<div class="evaluationRowValue">' +
-                    formatMoney(value) +
-                  "</div>" +
-
-                "</div>";
-
-            }
-          );
-
-      }
-
-
-      html += "</div>";
-
-
-      html +=
-        '<div class="evaluationSection">' +
-          "<h3>🏠 Nach Projekt</h3>";
-
-
-      const projectData =
-        evaluation.byProject || {};
-
-
-      const projectEntries =
-        Object.entries(
-          projectData
-        );
-
-
-      if (!projectEntries.length) {
-
-        html +=
-          '<div class="evaluationEmpty">' +
-          "Keine Daten vorhanden." +
-          "</div>";
-
-      } else {
-
-        projectEntries
-          .sort(
-            (a, b) =>
-              b[1] - a[1]
-          )
-          .forEach(
-            ([projectId, value]) => {
-
-              html +=
-                '<div class="evaluationRow">' +
-
-                  '<div class="evaluationRowName">' +
-                    escapeHtml(
-                      getProjectName(
-                        projectId
-                      )
-                    ) +
-                  "</div>" +
-
-                  '<div class="evaluationRowValue">' +
-                    formatMoney(value) +
-                  "</div>" +
-
-                "</div>";
-
-            }
-          );
-
-      }
-
-
-      html += "</div>";
-
-
-      content.innerHTML =
-        html;
-
-    }
-
-
-    // =========================================
-    // BUCHUNG BEARBEITEN
-    // =========================================
-
-    function editBooking(
-      booking
-    ) {
-
-
-      editingBookingId =
-        booking.id;
-
-
-      document
-        .getElementById(
-          "bookingFormTitle"
-        )
-        .textContent =
-          "✏️ Buchung bearbeiten";
-
-
-      document
-        .getElementById(
-          "editingNotice"
-        )
-        .style.display =
-          "block";
-
-
-      document
-        .getElementById(
-          "cancelEditButton"
-        )
-        .style.display =
-          "block";
-
-
-      document
-        .getElementById(
-          "saveBookingButton"
-        )
-        .textContent =
-          "💾 Änderung speichern";
-
-
-      document
-        .getElementById(
-          "project"
-        )
-        .value =
-          booking.projectId;
-
-
-      setBookingType(
-        booking.type
-      );
-
-
-      updateCategoryList(
-        booking.category
-      );
-
-
-      document
-        .getElementById(
-          "amount"
-        )
-        .value =
-          booking.amount;
-
-
-      document
-        .getElementById(
-          "description"
-        )
-        .value =
-          booking.description || "";
-
-
-      showPage("booking");
-
-    }
-
-
-    // =========================================
-    // BEARBEITUNG ABBRECHEN
-    // =========================================
-
-    function cancelEdit() {
-
-
-      editingBookingId =
-        null;
-
-
-      document
-        .getElementById(
-          "bookingFormTitle"
-        )
-        .textContent =
-          "➕ Neue Buchung";
-
-
-      document
-        .getElementById(
-          "editingNotice"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "cancelEditButton"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "saveBookingButton"
-        )
-        .textContent =
-          "💾 Buchung speichern";
-
-
-      document
-        .getElementById(
-          "project"
-        )
-        .value = "";
-
-
-      document
-        .getElementById(
-          "amount"
-        )
-        .value = "";
-
-
-      document
-        .getElementById(
-          "description"
-        )
-        .value = "";
-
-
-      document
-        .getElementById(
-          "bookingResult"
-        )
-        .innerHTML = "";
-
-    }
-
-
-    // =========================================
-    // BUCHUNG LÖSCHEN
-    // =========================================
-
-    async function deleteBooking(
-      bookingId
-    ) {
-
-
-      if (
-        !confirm(
-          "Möchtest du diese Buchung wirklich löschen?"
-        )
-      ) {
-
-        return;
-
-      }
-
-
-      try {
-
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "deleteBooking",
-
-                  initData:
-                    tg.initData,
-
-                  bookingId:
-                    bookingId
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
-
-
-        await loadBookings();
-
-
-      } catch (error) {
-
-        alert(
-          "❌ Fehler beim Löschen:\n\n" +
-          error.message
-        );
-
-      }
-
-    }
-
-
-    // =========================================
-    // PROJEKTNAME
-    // =========================================
-
-    function getProjectName(
-      projectId
-    ) {
-
-
-      const project =
-        projects.find(
-          p =>
-            String(p.id) ===
-            String(projectId)
-        );
-
-
-      return project
-        ? project.name
-        : projectId;
-
-    }
-
-
-    // =========================================
-    // HTML ESCAPING
-    // =========================================
-
-    function escapeHtml(
-      value
-    ) {
-
-      return String(value)
-
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-
-        .replace(
-          /</g,
-          "&lt;"
-        )
-
-        .replace(
-          />/g,
-          "&gt;"
-        )
-
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
 
   </script>
 
 </body>
 
 </html>
+```
