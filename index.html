@@ -358,7 +358,7 @@
     }
 
     /* =========================================
-       BENUTZERVERWALTUNG
+       ADMIN
        ========================================= */
 
     .adminSection {
@@ -413,15 +413,29 @@
     }
 
     .adminUserActions {
-      display: flex;
-      gap: 8px;
       margin-top: 12px;
     }
 
+    .adminUserActions select {
+      margin-top: 5px;
+    }
+
     .adminUserActions button {
-      margin-top: 0;
+      margin-top: 10px;
       padding: 10px;
       font-size: 14px;
+    }
+
+    .roleSaveButton {
+      background: #2481cc;
+      color: white;
+    }
+
+    .selfUserNotice {
+      margin-top: 12px;
+      color: #777;
+      font-size: 14px;
+      font-style: italic;
     }
 
   </style>
@@ -432,10 +446,6 @@
 <body>
 
 
-  <!-- =========================================
-       KOPF
-       ========================================= -->
-
   <h1>🏠 Bauverwaltung</h1>
 
 
@@ -444,9 +454,7 @@
   </div>
 
 
-  <!-- =========================================
-       BENUTZER
-       ========================================= -->
+  <!-- BENUTZER -->
 
   <div
     id="userCard"
@@ -467,9 +475,7 @@
   </div>
 
 
-  <!-- =========================================
-       ANMELDEN
-       ========================================= -->
+  <!-- LOGIN -->
 
   <div
     id="loginCard"
@@ -482,9 +488,7 @@
       class="primaryButton"
       onclick="authenticate()"
     >
-
       🔐 Bei Bauverwaltung anmelden
-
     </button>
 
     <div id="authResult"></div>
@@ -492,9 +496,7 @@
   </div>
 
 
-  <!-- =========================================
-       HAUPTMENÜ
-       ========================================= -->
+  <!-- MENÜ -->
 
   <div
     id="mainMenu"
@@ -542,9 +544,7 @@
   </div>
 
 
-  <!-- =========================================
-       NEUE BUCHUNG
-       ========================================= -->
+  <!-- BUCHUNG -->
 
   <div
     id="bookingPage"
@@ -677,9 +677,7 @@
   </div>
 
 
-  <!-- =========================================
-       MEINE BUCHUNGEN
-       ========================================= -->
+  <!-- MEINE BUCHUNGEN -->
 
   <div
     id="bookingsPage"
@@ -715,9 +713,7 @@
   </div>
 
 
-  <!-- =========================================
-       AUSWERTUNG
-       ========================================= -->
+  <!-- AUSWERTUNG -->
 
   <div
     id="evaluationPage"
@@ -866,9 +862,7 @@
   </div>
 
 
-  <!-- =========================================
-       ADMIN VERWALTUNG
-       ========================================= -->
+  <!-- VERWALTUNG -->
 
   <div
     id="adminPage"
@@ -982,10 +976,6 @@
   </div>
 
 
-  <!-- =========================================
-       JAVASCRIPT
-       ========================================= -->
-
   <script>
 
 
@@ -995,7 +985,6 @@
 
     const tg =
       window.Telegram.WebApp;
-
 
     tg.ready();
 
@@ -1039,6 +1028,7 @@
         '<p class="error">' +
         '<strong>❌ Keine Telegram-Daten</strong>' +
         '</p>' +
+
         '<p>' +
         'Diese Seite muss über Telegram geöffnet werden.' +
         '</p>';
@@ -1091,11 +1081,15 @@
     async function authenticate() {
 
       const result =
-        document.getElementById("authResult");
+        document.getElementById(
+          "authResult"
+        );
 
 
       const button =
-        document.getElementById("authButton");
+        document.getElementById(
+          "authButton"
+        );
 
 
       button.disabled = true;
@@ -1120,11 +1114,13 @@
 
               body:
                 JSON.stringify({
+
                   action:
                     "authenticate",
 
                   initData:
                     tg.initData
+
                 })
             }
           );
@@ -1168,7 +1164,9 @@
         if (
           String(
             currentUser.role
-          ).toLowerCase() ===
+          )
+            .trim()
+            .toLowerCase() ===
           "admin"
         ) {
 
@@ -1289,7 +1287,9 @@
           !currentUser ||
           String(
             currentUser.role
-          ).toLowerCase() !==
+          )
+            .trim()
+            .toLowerCase() !==
           "admin"
         ) {
 
@@ -1407,14 +1407,10 @@
 
       try {
 
-
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -1423,7 +1419,6 @@
               },
 
               body:
-
                 JSON.stringify({
 
                   action:
@@ -1435,7 +1430,6 @@
                 })
 
             }
-
           );
 
 
@@ -1458,7 +1452,6 @@
 
 
       } catch (error) {
-
 
         list.innerHTML =
           '<div class="error">' +
@@ -1504,7 +1497,6 @@
 
 
       users.forEach(
-
         user => {
 
 
@@ -1526,40 +1518,105 @@
             ).trim();
 
 
+          const isCurrentUser =
+            String(user.id) ===
+            String(currentUser.id);
+
+
+          let actionsHtml = "";
+
+
+          if (isCurrentUser) {
+
+            actionsHtml =
+              '<div class="selfUserNotice">' +
+              "🔒 Deine eigene Rolle kann nicht geändert werden." +
+              "</div>";
+
+          } else {
+
+            actionsHtml =
+
+              '<div class="adminUserActions">' +
+
+                '<label>' +
+                  "Rolle" +
+                "</label>" +
+
+                '<select id="role_' +
+                  escapeHtml(
+                    user.id
+                  ) +
+                '">' +
+
+                  '<option value="Benutzer"' +
+                    (
+                      user.role ===
+                      "Benutzer"
+                        ? " selected"
+                        : ""
+                    ) +
+                  '>' +
+                    "Benutzer" +
+                  "</option>" +
+
+                  '<option value="Admin"' +
+                    (
+                      user.role ===
+                      "Admin"
+                        ? " selected"
+                        : ""
+                    ) +
+                  '>' +
+                    "Admin" +
+                  "</option>" +
+
+                "</select>" +
+
+                '<button ' +
+                  'class="roleSaveButton" ' +
+                  'onclick="changeUserRole(\'' +
+                  escapeHtml(
+                    user.id
+                  ) +
+                  '\')">' +
+                  "💾 Rolle speichern" +
+                "</button>" +
+
+              "</div>";
+
+          }
+
+
           item.innerHTML =
 
             '<div class="adminUserHeader">' +
 
               '<div class="adminUserName">' +
-
                 "👤 " +
-
                 escapeHtml(
                   fullName
                 ) +
-
               "</div>" +
 
               '<div class="adminUserRole">' +
-
                 escapeHtml(
                   user.role
                 ) +
-
               "</div>" +
 
             "</div>" +
 
 
             '<div class="adminUserDetails">' +
-
               "Telegram ID: " +
-
               escapeHtml(
                 user.id
               ) +
+            "</div>" +
 
-            "</div>";
+
+            actionsHtml;
 
 
           list.appendChild(
@@ -1567,8 +1624,116 @@
           );
 
         }
-
       );
+
+    }
+
+
+    // =========================================
+    // ROLLE ÄNDERN
+    // =========================================
+
+    async function changeUserRole(
+      userId
+    ) {
+
+
+      const select =
+        document.getElementById(
+          "role_" + userId
+        );
+
+
+      if (!select) {
+
+        return;
+
+      }
+
+
+      const newRole =
+        select.value;
+
+
+      if (
+        !confirm(
+          "Möchtest du die Rolle dieses Benutzers wirklich auf \"" +
+          newRole +
+          "\" ändern?"
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain"
+              },
+
+              body:
+                JSON.stringify({
+
+                  action:
+                    "updateUserRole",
+
+                  initData:
+                    tg.initData,
+
+                  userId:
+                    userId,
+
+                  newRole:
+                    newRole
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error
+          );
+
+        }
+
+
+        alert(
+          "✅ Rolle erfolgreich geändert."
+        );
+
+
+        await loadUsers();
+
+
+      } catch (error) {
+
+
+        alert(
+          "❌ Rolle konnte nicht geändert werden.\n\n" +
+          error.message
+        );
+
+      }
 
     }
 
@@ -1594,12 +1759,15 @@
 
               body:
                 JSON.stringify({
+
                   action:
                     "getProjects",
 
                   initData:
                     tg.initData
+
                 })
+
             }
           );
 
@@ -1691,12 +1859,15 @@
 
               body:
                 JSON.stringify({
+
                   action:
                     "getCategories",
 
                   initData:
                     tg.initData
+
                 })
+
             }
           );
 
@@ -1916,7 +2087,6 @@
 
       try {
 
-
         const action =
           editingBookingId
             ? "updateBooking"
@@ -1955,6 +2125,7 @@
           await fetch(
             APPS_SCRIPT_URL,
             {
+
               method: "POST",
 
               headers: {
@@ -1975,6 +2146,7 @@
                     booking
 
                 })
+
             }
           );
 
@@ -2047,6 +2219,7 @@
           await fetch(
             APPS_SCRIPT_URL,
             {
+
               method: "POST",
 
               headers: {
@@ -2064,6 +2237,7 @@
                     tg.initData
 
                 })
+
             }
           );
 
@@ -2638,6 +2812,7 @@
           await fetch(
             APPS_SCRIPT_URL,
             {
+
               method: "POST",
 
               headers: {
@@ -2658,6 +2833,7 @@
                     filters
 
                 })
+
             }
           );
 
@@ -3159,6 +3335,7 @@
           await fetch(
             APPS_SCRIPT_URL,
             {
+
               method: "POST",
 
               headers: {
@@ -3179,6 +3356,7 @@
                     bookingId
 
                 })
+
             }
           );
 
