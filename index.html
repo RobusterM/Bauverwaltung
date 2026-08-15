@@ -2,6 +2,7 @@
 <html lang="de">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -13,116 +14,199 @@
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+
   <style>
 
     body {
+
       font-family: Arial, sans-serif;
+
       margin: 0;
+
       padding: 20px;
+
       background: #f4f4f4;
+
     }
+
 
     h1 {
+
       margin-top: 0;
+
     }
+
 
     h2 {
+
       margin-top: 0;
+
     }
+
 
     .card {
+
       background: white;
+
       border-radius: 12px;
+
       padding: 20px;
+
       margin-top: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.1);
+
     }
+
 
     .success {
+
       color: #16803c;
+
     }
+
 
     .error {
+
       color: #c62828;
+
     }
+
 
     .info {
+
       color: #555;
+
     }
 
+
     label {
+
       display: block;
+
       font-weight: bold;
+
       margin-top: 15px;
+
       margin-bottom: 6px;
+
     }
+
 
     select,
     input,
     textarea {
+
       width: 100%;
+
       box-sizing: border-box;
+
       padding: 12px;
+
       font-size: 16px;
+
       border: 1px solid #ccc;
+
       border-radius: 8px;
+
       background: white;
+
     }
+
 
     textarea {
+
       resize: vertical;
+
       min-height: 80px;
+
     }
+
 
     button {
+
       width: 100%;
+
       padding: 14px;
+
       margin-top: 20px;
+
       font-size: 16px;
+
       border: none;
+
       border-radius: 10px;
+
       cursor: pointer;
+
       background: #2481cc;
+
       color: white;
+
     }
+
 
     button:disabled {
+
       background: #aaa;
+
       cursor: default;
+
     }
 
-    .secondaryButton {
-      background: #777;
-    }
-
-    #authResult {
-      margin-top: 15px;
-    }
-
-    #bookingCard {
-      display: none;
-    }
-
-    #bookingResult {
-      margin-top: 15px;
-      line-height: 1.5;
-    }
 
     .typeButtons {
+
       display: flex;
+
       gap: 10px;
+
     }
+
 
     .typeButton {
+
       flex: 1;
+
       margin-top: 0;
+
       background: #ddd;
+
       color: #333;
+
     }
 
+
     .typeButton.active {
+
       background: #2481cc;
+
       color: white;
+
+    }
+
+
+    #authResult {
+
+      margin-top: 15px;
+
+    }
+
+
+    #bookingResult {
+
+      margin-top: 15px;
+
+      line-height: 1.5;
+
+    }
+
+
+    #bookingCard {
+
+      display: none;
+
     }
 
   </style>
@@ -132,21 +216,24 @@
 
 <body>
 
+
   <h1>🏠 Bauverwaltung</h1>
 
 
-  <!-- =====================================================
+  <!-- ==================================================
        TELEGRAM STATUS
-       ===================================================== -->
+       ================================================== -->
 
   <div id="status">
+
     Telegram wird geprüft...
+
   </div>
 
 
-  <!-- =====================================================
+  <!-- ==================================================
        BENUTZER
-       ===================================================== -->
+       ================================================== -->
 
   <div
     id="userCard"
@@ -156,36 +243,52 @@
 
     <h2>👤 Benutzer</h2>
 
+
     <p>
+
       <strong>Name:</strong>
+
       <span id="name"></span>
+
     </p>
 
+
     <p>
+
       <strong>Username:</strong>
+
       <span id="username"></span>
+
     </p>
 
+
     <p>
+
       <strong>Telegram ID:</strong>
+
       <span id="id"></span>
+
     </p>
+
 
     <button
       id="authButton"
       onclick="authenticate()"
     >
+
       🔐 Bei Bauverwaltung anmelden
+
     </button>
+
 
     <div id="authResult"></div>
 
   </div>
 
 
-  <!-- =====================================================
+  <!-- ==================================================
        NEUE BUCHUNG
-       ===================================================== -->
+       ================================================== -->
 
   <div
     id="bookingCard"
@@ -195,28 +298,37 @@
     <h2>➕ Neue Buchung</h2>
 
 
-    <!-- Projekt -->
+    <!-- PROJEKT -->
 
     <label for="project">
+
       Projekt
+
     </label>
+
 
     <select id="project">
 
       <option value="">
+
         Projekte werden geladen...
+
       </option>
 
     </select>
 
 
-    <!-- Typ -->
+    <!-- TYP -->
 
     <label>
+
       Typ
+
     </label>
 
+
     <div class="typeButtons">
+
 
       <button
         type="button"
@@ -224,8 +336,11 @@
         class="typeButton active"
         onclick="setBookingType('Ausgabe')"
       >
+
         💸 Ausgabe
+
       </button>
+
 
       <button
         type="button"
@@ -233,32 +348,43 @@
         class="typeButton"
         onclick="setBookingType('Einnahme')"
       >
+
         💰 Einnahme
+
       </button>
+
 
     </div>
 
 
-    <!-- Kategorie -->
+    <!-- KATEGORIE -->
 
     <label for="category">
+
       Kategorie
+
     </label>
+
 
     <select id="category">
 
       <option value="">
-        Kategorie wird geladen...
+
+        Kategorien werden geladen...
+
       </option>
 
     </select>
 
 
-    <!-- Betrag -->
+    <!-- BETRAG -->
 
     <label for="amount">
+
       Betrag (€)
+
     </label>
+
 
     <input
       id="amount"
@@ -270,11 +396,14 @@
     >
 
 
-    <!-- Beschreibung -->
+    <!-- BESCHREIBUNG -->
 
     <label for="description">
+
       Beschreibung (optional)
+
     </label>
+
 
     <textarea
       id="description"
@@ -282,51 +411,55 @@
     ></textarea>
 
 
-    <!-- Speichern -->
+    <!-- SPEICHERN -->
 
     <button
       id="saveBookingButton"
       onclick="saveBooking()"
     >
+
       💾 Buchung speichern
+
     </button>
 
 
     <div id="bookingResult"></div>
 
+
   </div>
 
 
-  <!-- =====================================================
+  <!-- ==================================================
        JAVASCRIPT
-       ===================================================== -->
+       ================================================== -->
 
   <script>
 
 
-    // =====================================================
+    // ==================================================
     // TELEGRAM
-    // =====================================================
+    // ==================================================
 
     const tg =
       window.Telegram.WebApp;
 
 
     tg.ready();
+
     tg.expand();
 
 
-    // =====================================================
-    // APPS SCRIPT
-    // =====================================================
+    // ==================================================
+    // APPS SCRIPT URL
+    // ==================================================
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/macros/s/AKfycbytTS_UdYyX0d_I05hTW6l8-YXb3WT1g1PD4BqF-AeGqipgYQJYYRFKhVyPXQyHlPxx/exec";
 
 
-    // =====================================================
-    // GLOBALE VARIABLEN
-    // =====================================================
+    // ==================================================
+    // VARIABLEN
+    // ==================================================
 
     let projects = [];
 
@@ -334,49 +467,42 @@
 
     let bookingType = "Ausgabe";
 
-    let authenticatedUser = null;
 
-
-    // =====================================================
-    // ELEMENTE
-    // =====================================================
+    // ==================================================
+    // TELEGRAM PRÜFEN
+    // ==================================================
 
     const status =
       document.getElementById("status");
 
-    const userCard =
-      document.getElementById("userCard");
-
-    const bookingCard =
-      document.getElementById("bookingCard");
-
-    const authResult =
-      document.getElementById("authResult");
-
-    const bookingResult =
-      document.getElementById("bookingResult");
-
-
-    // =====================================================
-    // TELEGRAM PRÜFEN
-    // =====================================================
 
     if (!tg.initData) {
 
+
       status.innerHTML =
+
         '<p class="error">' +
+
         '<strong>❌ Keine Telegram-Daten</strong>' +
+
         '</p>' +
 
         '<p>' +
+
         'Diese Seite muss über Telegram geöffnet werden.' +
+
         '</p>';
+
 
     } else {
 
+
       status.innerHTML =
+
         '<p class="success">' +
+
         '<strong>✅ Telegram erkannt</strong>' +
+
         '</p>';
 
 
@@ -386,84 +512,113 @@
 
       if (user) {
 
-        userCard.style.display =
-          "block";
+
+        document
+          .getElementById("userCard")
+          .style.display = "block";
 
 
         document
           .getElementById("name")
           .textContent =
-            user.first_name +
-            (
-              user.last_name
-                ? " " + user.last_name
-                : ""
-            );
+
+          user.first_name +
+
+          (
+            user.last_name
+              ? " " + user.last_name
+              : ""
+          );
 
 
         document
           .getElementById("username")
           .textContent =
-            user.username
-              ? "@" + user.username
-              : "kein Username";
+
+          user.username
+
+            ? "@" + user.username
+
+            : "kein Username";
 
 
         document
           .getElementById("id")
           .textContent =
-            user.id;
+
+          user.id;
 
       }
 
     }
 
 
-    // =====================================================
-    // TELEGRAM AUTHENTIFIZIERUNG
-    // =====================================================
+    // ==================================================
+    // AUTHENTIFIZIERUNG
+    // ==================================================
 
     async function authenticate() {
+
 
       const result =
         document.getElementById(
           "authResult"
         );
 
-      const authButton =
+
+      const button =
         document.getElementById(
           "authButton"
         );
 
 
-      authButton.disabled =
-        true;
+      button.disabled = true;
 
 
       result.innerHTML =
-        "⏳ Authentifizierung läuft...";
+
+        '<span class="info">' +
+
+        '⏳ Authentifizierung läuft...' +
+
+        '</span>';
 
 
       try {
 
+
         const response =
+
           await fetch(
+
             APPS_SCRIPT_URL,
+
             {
+
               method: "POST",
 
               headers: {
-                "Content-Type": "text/plain"
+
+                "Content-Type":
+                  "text/plain"
+
               },
 
-              body: JSON.stringify({
 
-                initData:
-                  tg.initData
+              body:
 
-              })
+                JSON.stringify({
+
+                  action:
+                    "authenticate",
+
+                  initData:
+                    tg.initData
+
+                })
 
             }
+
           );
 
 
@@ -473,24 +628,25 @@
 
         if (data.ok) {
 
-          // Benutzer speichern
-
-          authenticatedUser =
-            data.user;
-
 
           result.innerHTML =
+
             '<span class="success">' +
+
             "✅ Authentifiziert<br><br>" +
 
             "👤 " +
+
             data.user.first_name +
+
             " " +
+
             data.user.last_name +
 
             "<br>" +
 
             "🔑 Rolle: " +
+
             data.user.role +
 
             "</span>";
@@ -498,11 +654,12 @@
 
           // Buchungsbereich anzeigen
 
-          bookingCard.style.display =
-            "block";
+          document
+            .getElementById("bookingCard")
+            .style.display = "block";
 
 
-          // Projekte und Kategorien laden
+          // Daten laden
 
           await loadProjects();
 
@@ -511,36 +668,50 @@
 
         } else {
 
+
           result.innerHTML =
+
             '<span class="error">' +
+
             "❌ Authentifizierung fehlgeschlagen:<br>" +
+
             data.error +
+
             "</span>";
 
 
-          authButton.disabled =
-            false;
+          button.disabled = false;
 
         }
 
 
       } catch (error) {
 
+
         result.innerHTML =
+
           '<span class="error">' +
+
           "❌ Verbindungsfehler:<br>" +
+
           error +
+
           "</span>";
 
 
-        authButton.disabled =
-          false;
+        button.disabled = false;
 
       }
 
     }
 
+
+    // ==================================================
+    // PROJEKTE LADEN
+    // ==================================================
+
     async function loadProjects() {
+
 
       const select =
         document.getElementById(
@@ -549,35 +720,49 @@
 
 
       select.innerHTML =
+
         '<option value="">' +
+
         '⏳ Projekte werden geladen...' +
+
         '</option>';
 
 
       try {
 
+
         const response =
+
           await fetch(
+
             APPS_SCRIPT_URL,
+
             {
 
               method: "POST",
 
               headers: {
-                "Content-Type": "text/plain"
+
+                "Content-Type":
+                  "text/plain"
+
               },
 
-              body: JSON.stringify({
 
-                action:
-                  "getProjects",
+              body:
 
-                initData:
-                  tg.initData
+                JSON.stringify({
 
-              })
+                  action:
+                    "getProjects",
+
+                  initData:
+                    tg.initData
+
+                })
 
             }
+
           );
 
 
@@ -588,8 +773,11 @@
         if (!data.ok) {
 
           throw new Error(
+
             data.error ||
+
             "Projekte konnten nicht geladen werden"
+
           );
 
         }
@@ -600,13 +788,18 @@
 
 
         select.innerHTML =
+
           '<option value="">' +
+
           'Projekt auswählen...' +
+
           '</option>';
 
 
         projects.forEach(
+
           project => {
+
 
             const option =
               document.createElement(
@@ -627,14 +820,19 @@
             );
 
           }
+
         );
 
 
         if (projects.length === 0) {
 
+
           select.innerHTML =
+
             '<option value="">' +
+
             'Keine aktiven Projekte vorhanden' +
+
             '</option>';
 
         }
@@ -642,22 +840,35 @@
 
       } catch (error) {
 
+
         select.innerHTML =
+
           '<option value="">' +
+
           '❌ Fehler beim Laden' +
+
           '</option>';
 
 
         console.error(
+
           "Projektfehler:",
+
           error
+
         );
 
       }
 
     }
 
+
+    // ==================================================
+    // KATEGORIEN LADEN
+    // ==================================================
+
     async function loadCategories() {
+
 
       const select =
         document.getElementById(
@@ -666,35 +877,49 @@
 
 
       select.innerHTML =
+
         '<option value="">' +
+
         '⏳ Kategorien werden geladen...' +
+
         '</option>';
 
 
       try {
 
+
         const response =
+
           await fetch(
+
             APPS_SCRIPT_URL,
+
             {
 
               method: "POST",
 
               headers: {
-                "Content-Type": "text/plain"
+
+                "Content-Type":
+                  "text/plain"
+
               },
 
-              body: JSON.stringify({
 
-                action:
-                  "getCategories",
+              body:
 
-                initData:
-                  tg.initData
+                JSON.stringify({
 
-              })
+                  action:
+                    "getCategories",
+
+                  initData:
+                    tg.initData
+
+                })
 
             }
+
           );
 
 
@@ -705,8 +930,11 @@
         if (!data.ok) {
 
           throw new Error(
+
             data.error ||
+
             "Kategorien konnten nicht geladen werden"
+
           );
 
         }
@@ -721,22 +949,35 @@
 
       } catch (error) {
 
+
         select.innerHTML =
+
           '<option value="">' +
+
           '❌ Fehler beim Laden' +
+
           '</option>';
 
 
         console.error(
+
           "Kategoriefehler:",
+
           error
+
         );
 
       }
 
     }
 
+
+    // ==================================================
+    // BUCHUNGSTYP
+    // ==================================================
+
     function setBookingType(type) {
+
 
       bookingType =
         type;
@@ -747,6 +988,7 @@
           "expenseButton"
         );
 
+
       const incomeButton =
         document.getElementById(
           "incomeButton"
@@ -755,19 +997,24 @@
 
       if (type === "Ausgabe") {
 
+
         expenseButton
           .classList
           .add("active");
+
 
         incomeButton
           .classList
           .remove("active");
 
+
       } else {
+
 
         incomeButton
           .classList
           .add("active");
+
 
         expenseButton
           .classList
@@ -780,7 +1027,13 @@
 
     }
 
+
+    // ==================================================
+    // KATEGORIEN FILTERN
+    // ==================================================
+
     function updateCategoryList() {
+
 
       const select =
         document.getElementById(
@@ -789,22 +1042,32 @@
 
 
       select.innerHTML =
+
         '<option value="">' +
+
         'Kategorie auswählen...' +
+
         '</option>';
 
 
       const filteredCategories =
+
         categories.filter(
+
           category =>
+
             category.type === bookingType
+
         );
 
 
       filteredCategories.forEach(
+
         category => {
 
+
           const option =
+
             document.createElement(
               "option"
             );
@@ -823,6 +1086,7 @@
           );
 
         }
+
       );
 
 
@@ -830,57 +1094,84 @@
         filteredCategories.length === 0
       ) {
 
+
         select.innerHTML =
+
           '<option value="">' +
+
           'Keine Kategorien vorhanden' +
+
           '</option>';
 
       }
 
     }
 
+
+    // ==================================================
+    // BUCHUNG SPEICHERN
+    // ==================================================
+
     async function saveBooking() {
 
+
       const projectId =
+
         document.getElementById(
           "project"
         ).value;
 
 
       const category =
+
         document.getElementById(
           "category"
         ).value;
 
 
-      const amountInput =
+      const amount =
+
         document.getElementById(
           "amount"
         ).value;
 
 
       const description =
+
         document.getElementById(
           "description"
         ).value.trim();
 
 
-      const saveButton =
+      const button =
+
         document.getElementById(
           "saveBookingButton"
         );
 
 
-      // -----------------------------------------------
-      // Eingaben prüfen
-      // -----------------------------------------------
+      const result =
+
+        document.getElementById(
+          "bookingResult"
+        );
+
+
+      // ----------------------------------------------
+      // PRÜFUNG
+      // ----------------------------------------------
 
       if (!projectId) {
 
-        bookingResult.innerHTML =
+
+        result.innerHTML =
+
           '<span class="error">' +
+
           "❌ Bitte ein Projekt auswählen." +
+
           "</span>";
+
 
         return;
 
@@ -889,10 +1180,15 @@
 
       if (!category) {
 
-        bookingResult.innerHTML =
+
+        result.innerHTML =
+
           '<span class="error">' +
+
           "❌ Bitte eine Kategorie auswählen." +
+
           "</span>";
+
 
         return;
 
@@ -900,77 +1196,95 @@
 
 
       if (
-        !amountInput ||
-        Number(amountInput) <= 0
+        !amount ||
+        Number(amount) <= 0
       ) {
 
-        bookingResult.innerHTML =
+
+        result.innerHTML =
+
           '<span class="error">' +
+
           "❌ Bitte einen gültigen Betrag eingeben." +
+
           "</span>";
+
 
         return;
 
       }
 
 
-      // -----------------------------------------------
-      // Speichern
-      // -----------------------------------------------
+      // ----------------------------------------------
+      // SPEICHERN
+      // ----------------------------------------------
 
-      saveButton.disabled =
-        true;
+      button.disabled = true;
 
 
-      bookingResult.innerHTML =
+      result.innerHTML =
+
         '<span class="info">' +
+
         "⏳ Buchung wird gespeichert..." +
+
         "</span>";
 
 
       try {
 
+
         const response =
+
           await fetch(
+
             APPS_SCRIPT_URL,
+
             {
 
               method: "POST",
 
               headers: {
-                "Content-Type": "text/plain"
+
+                "Content-Type":
+                  "text/plain"
+
               },
 
-              body: JSON.stringify({
 
-                action:
-                  "createBooking",
+              body:
 
-                initData:
-                  tg.initData,
+                JSON.stringify({
 
-                booking: {
+                  action:
+                    "createBooking",
 
-                  projectId:
-                    projectId,
+                  initData:
+                    tg.initData,
 
-                  type:
-                    bookingType,
+                  booking: {
 
-                  category:
-                    category,
+                    projectId:
+                      projectId,
 
-                  amount:
-                    amountInput,
+                    type:
+                      bookingType,
 
-                  description:
-                    description
+                    category:
+                      category,
 
-                }
+                    amount:
+                      amount,
 
-              })
+                    description:
+                      description
+
+                  }
+
+                })
 
             }
+
           );
 
 
@@ -981,18 +1295,22 @@
         if (!data.ok) {
 
           throw new Error(
+
             data.error ||
+
             "Buchung konnte nicht gespeichert werden"
+
           );
 
         }
 
 
-        // ---------------------------------------------
-        // Erfolg
-        // ---------------------------------------------
+        // --------------------------------------------
+        // ERFOLG
+        // --------------------------------------------
 
-        bookingResult.innerHTML =
+        result.innerHTML =
+
           '<span class="success">' +
 
           "✅ Buchung gespeichert!" +
@@ -1000,31 +1318,34 @@
           "<br><br>" +
 
           "Buchungs-ID: " +
+
           data.bookingId +
 
           "</span>";
 
 
-        // Formular zurücksetzen
+        // Formular leeren
 
-        document.getElementById(
-          "amount"
-        ).value = "";
-
-
-        document.getElementById(
-          "description"
-        ).value = "";
+        document
+          .getElementById("amount")
+          .value = "";
 
 
-        document.getElementById(
-          "category"
-        ).value = "";
+        document
+          .getElementById("description")
+          .value = "";
+
+
+        document
+          .getElementById("category")
+          .value = "";
 
 
       } catch (error) {
 
-        bookingResult.innerHTML =
+
+        result.innerHTML =
+
           '<span class="error">' +
 
           "❌ Fehler beim Speichern:<br>" +
@@ -1036,12 +1357,13 @@
       }
 
 
-      saveButton.disabled =
-        false;
+      button.disabled = false;
 
     }
 
+
   </script>
+
 
 </body>
 
