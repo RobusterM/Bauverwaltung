@@ -63,9 +63,30 @@
       color: #555;
     }
 
-    /* =========================================
-       MENÜ
-       ========================================= */
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .primaryButton {
+      background: #2481cc;
+      color: white;
+    }
+
+    .secondaryButton {
+      background: #777;
+      color: white;
+    }
 
     .menu {
       margin-top: 20px;
@@ -98,10 +119,6 @@
       border-left: 5px solid #2481cc;
     }
 
-    /* =========================================
-       FORMULARE
-       ========================================= */
-
     label {
       display: block;
       font-weight: bold;
@@ -124,31 +141,6 @@
     textarea {
       resize: vertical;
       min-height: 80px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: default;
-    }
-
-    .primaryButton {
-      background: #2481cc;
-      color: white;
-    }
-
-    .secondaryButton {
-      background: #777;
-      color: white;
     }
 
     .typeButtons {
@@ -176,10 +168,6 @@
       margin-top: 15px;
       line-height: 1.5;
     }
-
-    /* =========================================
-       BUCHUNGEN
-       ========================================= */
 
     .booking {
       border: 1px solid #ddd;
@@ -257,10 +245,6 @@
       padding: 20px 0;
     }
 
-    /* =========================================
-       BEARBEITEN
-       ========================================= */
-
     .editingNotice {
       background: #fff3cd;
       color: #856404;
@@ -268,10 +252,6 @@
       padding: 12px;
       margin-bottom: 15px;
     }
-
-    /* =========================================
-       AUSWERTUNG FILTER
-       ========================================= */
 
     .filterBox {
       background: #f8f8f8;
@@ -300,10 +280,6 @@
       background: #ddd;
       color: #333;
     }
-
-    /* =========================================
-       AUSWERTUNG
-       ========================================= */
 
     .evaluationCards {
       display: grid;
@@ -381,9 +357,71 @@
       padding: 15px 0;
     }
 
-    .activeFilter {
+    /* =========================================
+       BENUTZERVERWALTUNG
+       ========================================= */
+
+    .adminSection {
+      margin-top: 20px;
+    }
+
+    .adminSectionButton {
+      background: #f5f5f5;
+      color: #222;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .adminList {
+      margin-top: 15px;
+    }
+
+    .adminUser {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+
+    .adminUserHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .adminUserName {
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .adminUserRole {
       background: #e8f2fb;
-      border: 1px solid #2481cc;
+      color: #2481cc;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .adminUserDetails {
+      margin-top: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .adminUserActions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .adminUserActions button {
+      margin-top: 0;
+      padding: 10px;
+      font-size: 14px;
     }
 
   </style>
@@ -417,19 +455,13 @@
   >
 
     <div>
-
       👤
       <strong id="name"></strong>
-
     </div>
 
-    <div
-      style="margin-top:6px;"
-    >
-
+    <div style="margin-top:6px;">
       🔑
       <span id="role"></span>
-
     </div>
 
   </div>
@@ -470,16 +502,12 @@
     style="display:none;"
   >
 
-
     <button
       class="menuButton"
       onclick="showPage('booking')"
     >
-
       <span class="icon">➕</span>
-
       <strong>Neue Buchung</strong>
-
     </button>
 
 
@@ -487,11 +515,8 @@
       class="menuButton"
       onclick="showPage('bookings')"
     >
-
       <span class="icon">📋</span>
-
       <strong>Meine Buchungen</strong>
-
     </button>
 
 
@@ -499,11 +524,8 @@
       class="menuButton"
       onclick="showPage('evaluation')"
     >
-
       <span class="icon">📊</span>
-
       <strong>Auswertung</strong>
-
     </button>
 
 
@@ -513,13 +535,9 @@
       onclick="showPage('admin')"
       style="display:none;"
     >
-
       <span class="icon">⚙️</span>
-
       <strong>Verwaltung</strong>
-
     </button>
-
 
   </div>
 
@@ -544,9 +562,7 @@
       class="editingNotice"
       style="display:none;"
     >
-
       ✏️ Du bearbeitest gerade eine bestehende Buchung.
-
     </div>
 
 
@@ -556,11 +572,9 @@
 
 
     <select id="project">
-
       <option value="">
         Projekte werden geladen...
       </option>
-
     </select>
 
 
@@ -571,16 +585,13 @@
 
     <div class="typeButtons">
 
-
       <button
         type="button"
         id="expenseButton"
         class="typeButton active"
         onclick="setBookingType('Ausgabe')"
       >
-
         💸 Ausgabe
-
       </button>
 
 
@@ -590,11 +601,8 @@
         class="typeButton"
         onclick="setBookingType('Einnahme')"
       >
-
         💰 Einnahme
-
       </button>
-
 
     </div>
 
@@ -605,11 +613,9 @@
 
 
     <select id="category">
-
       <option value="">
         Kategorien werden geladen...
       </option>
-
     </select>
 
 
@@ -644,9 +650,7 @@
       class="primaryButton"
       onclick="saveBooking()"
     >
-
       💾 Buchung speichern
-
     </button>
 
 
@@ -656,9 +660,7 @@
       onclick="cancelEdit()"
       style="display:none;"
     >
-
       ❌ Bearbeitung abbrechen
-
     </button>
 
 
@@ -666,9 +668,7 @@
       class="secondaryButton"
       onclick="showPage('menu')"
     >
-
       ↩️ Zurück zum Menü
-
     </button>
 
 
@@ -691,11 +691,9 @@
 
 
     <div id="bookingsList">
-
       <div class="info">
         ⏳ Buchungen werden geladen...
       </div>
-
     </div>
 
 
@@ -703,9 +701,7 @@
       class="secondaryButton"
       onclick="loadBookings()"
     >
-
       🔄 Aktualisieren
-
     </button>
 
 
@@ -713,9 +709,7 @@
       class="secondaryButton"
       onclick="showPage('menu')"
     >
-
       ↩️ Zurück zum Menü
-
     </button>
 
   </div>
@@ -734,10 +728,7 @@
     <h2>📊 Auswertung</h2>
 
 
-    <!-- FILTER -->
-
     <div class="filterBox">
-
 
       <h3>🔎 Filter</h3>
 
@@ -807,9 +798,7 @@
       </label>
 
 
-      <select
-        id="evaluationProject"
-      >
+      <select id="evaluationProject">
 
         <option value="">
           Alle Projekte
@@ -823,9 +812,7 @@
       </label>
 
 
-      <select
-        id="evaluationType"
-      >
+      <select id="evaluationType">
 
         <option value="Alle">
           Einnahmen und Ausgaben
@@ -846,9 +833,7 @@
         class="primaryButton"
         onclick="loadEvaluation()"
       >
-
         🔎 Auswertung anzeigen
-
       </button>
 
 
@@ -856,20 +841,13 @@
         class="resetButton"
         onclick="resetEvaluationFilters()"
       >
-
         ↩️ Filter zurücksetzen
-
       </button>
-
 
     </div>
 
 
-    <!-- AUSWERTUNG -->
-
-    <div
-      id="evaluationContent"
-    >
+    <div id="evaluationContent">
 
       <div class="info">
         ⏳ Auswertung wird geladen...
@@ -882,16 +860,14 @@
       class="secondaryButton"
       onclick="showPage('menu')"
     >
-
       ↩️ Zurück zum Menü
-
     </button>
 
   </div>
 
 
   <!-- =========================================
-       VERWALTUNG
+       ADMIN VERWALTUNG
        ========================================= -->
 
   <div
@@ -903,21 +879,104 @@
     <h2>⚙️ Verwaltung</h2>
 
 
-    <p class="info">
+    <!-- BENUTZER -->
 
-      Dieser Bereich ist nur für Administratoren
-      verfügbar.
+    <div class="adminSection">
 
-    </p>
+      <button
+        class="adminSectionButton"
+        onclick="showAdminSection('users')"
+      >
+        👥 Benutzerverwaltung
+      </button>
+
+
+      <div
+        id="usersAdminSection"
+        style="display:none;"
+      >
+
+        <div
+          id="usersAdminList"
+          class="adminList"
+        >
+
+          <div class="info">
+            ⏳ Benutzer werden geladen...
+          </div>
+
+        </div>
+
+
+        <button
+          class="secondaryButton"
+          onclick="loadUsers()"
+        >
+          🔄 Benutzer aktualisieren
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- PROJEKTE -->
+
+    <div class="adminSection">
+
+      <button
+        class="adminSectionButton"
+        onclick="showAdminSection('projects')"
+      >
+        🏠 Projektverwaltung
+      </button>
+
+
+      <div
+        id="projectsAdminSection"
+        style="display:none;"
+      >
+
+        <p class="info">
+          Die Projektverwaltung wird im nächsten Schritt eingerichtet.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- KATEGORIEN -->
+
+    <div class="adminSection">
+
+      <button
+        class="adminSectionButton"
+        onclick="showAdminSection('categories')"
+      >
+        📂 Kategorienverwaltung
+      </button>
+
+
+      <div
+        id="categoriesAdminSection"
+        style="display:none;"
+      >
+
+        <p class="info">
+          Die Kategorienverwaltung wird im nächsten Schritt eingerichtet.
+        </p>
+
+      </div>
+
+    </div>
 
 
     <button
       class="secondaryButton"
       onclick="showPage('menu')"
     >
-
       ↩️ Zurück zum Menü
-
     </button>
 
   </div>
@@ -976,31 +1035,19 @@
 
     if (!tg.initData) {
 
-
       status.innerHTML =
-
         '<p class="error">' +
-
         '<strong>❌ Keine Telegram-Daten</strong>' +
-
         '</p>' +
-
         '<p>' +
-
         'Diese Seite muss über Telegram geöffnet werden.' +
-
         '</p>';
-
 
     } else {
 
-
       status.innerHTML =
-
         '<p class="success">' +
-
         '<strong>✅ Telegram erkannt</strong>' +
-
         '</p>';
 
 
@@ -1010,28 +1057,27 @@
 
       if (user) {
 
-
         document
           .getElementById("userCard")
-          .style.display = "block";
+          .style.display =
+            "block";
 
 
         document
           .getElementById("name")
           .textContent =
-
-          user.first_name +
-
-          (
-            user.last_name
-              ? " " + user.last_name
-              : ""
-          );
+            user.first_name +
+            (
+              user.last_name
+                ? " " + user.last_name
+                : ""
+            );
 
 
         document
           .getElementById("loginCard")
-          .style.display = "block";
+          .style.display =
+            "block";
 
       }
 
@@ -1044,17 +1090,12 @@
 
     async function authenticate() {
 
-
       const result =
-        document.getElementById(
-          "authResult"
-        );
+        document.getElementById("authResult");
 
 
       const button =
-        document.getElementById(
-          "authButton"
-        );
+        document.getElementById("authButton");
 
 
       button.disabled = true;
@@ -1066,14 +1107,10 @@
 
       try {
 
-
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -1082,19 +1119,14 @@
               },
 
               body:
-
                 JSON.stringify({
-
                   action:
                     "authenticate",
 
                   initData:
                     tg.initData
-
                 })
-
             }
-
           );
 
 
@@ -1162,15 +1194,10 @@
 
       } catch (error) {
 
-
         result.innerHTML =
-
           '<span class="error">' +
-
           "❌ Authentifizierung fehlgeschlagen:<br>" +
-
           error +
-
           "</span>";
 
 
@@ -1213,9 +1240,7 @@
 
 
       if (page === "menu") {
-
         return;
-
       }
 
 
@@ -1288,10 +1313,96 @@
 
 
     // =========================================
-    // PROJEKTE LADEN
+    // ADMIN-BEREICH
     // =========================================
 
-    async function loadProjects() {
+    function showAdminSection(
+      section
+    ) {
+
+
+      document
+        .getElementById(
+          "usersAdminSection"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "projectsAdminSection"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "categoriesAdminSection"
+        )
+        .style.display =
+          "none";
+
+
+      if (section === "users") {
+
+        document
+          .getElementById(
+            "usersAdminSection"
+          )
+          .style.display =
+            "block";
+
+
+        loadUsers();
+
+      }
+
+
+      if (section === "projects") {
+
+        document
+          .getElementById(
+            "projectsAdminSection"
+          )
+          .style.display =
+            "block";
+
+      }
+
+
+      if (section === "categories") {
+
+        document
+          .getElementById(
+            "categoriesAdminSection"
+          )
+          .style.display =
+            "block";
+
+      }
+
+    }
+
+
+    // =========================================
+    // BENUTZER LADEN
+    // =========================================
+
+    async function loadUsers() {
+
+
+      const list =
+        document.getElementById(
+          "usersAdminList"
+        );
+
+
+      list.innerHTML =
+        '<div class="info">' +
+        "⏳ Benutzer werden geladen..." +
+        "</div>";
 
 
       try {
@@ -1316,7 +1427,7 @@
                 JSON.stringify({
 
                   action:
-                    "getProjects",
+                    "getUsers",
 
                   initData:
                     tg.initData
@@ -1325,6 +1436,171 @@
 
             }
 
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          throw new Error(
+            data.error
+          );
+
+        }
+
+
+        displayUsers(
+          data.users || []
+        );
+
+
+      } catch (error) {
+
+
+        list.innerHTML =
+          '<div class="error">' +
+          "❌ Benutzer konnten nicht geladen werden.<br><br>" +
+          escapeHtml(
+            error.message
+          ) +
+          "</div>";
+
+      }
+
+    }
+
+
+    // =========================================
+    // BENUTZER DARSTELLEN
+    // =========================================
+
+    function displayUsers(
+      users
+    ) {
+
+
+      const list =
+        document.getElementById(
+          "usersAdminList"
+        );
+
+
+      if (!users.length) {
+
+        list.innerHTML =
+          '<div class="emptyBookings">' +
+          "Keine Benutzer vorhanden." +
+          "</div>";
+
+        return;
+
+      }
+
+
+      list.innerHTML = "";
+
+
+      users.forEach(
+
+        user => {
+
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "adminUser";
+
+
+          const fullName =
+            (
+              user.first_name +
+              " " +
+              user.last_name
+            ).trim();
+
+
+          item.innerHTML =
+
+            '<div class="adminUserHeader">' +
+
+              '<div class="adminUserName">' +
+
+                "👤 " +
+
+                escapeHtml(
+                  fullName
+                ) +
+
+              "</div>" +
+
+              '<div class="adminUserRole">' +
+
+                escapeHtml(
+                  user.role
+                ) +
+
+              "</div>" +
+
+            "</div>" +
+
+
+            '<div class="adminUserDetails">' +
+
+              "Telegram ID: " +
+
+              escapeHtml(
+                user.id
+              ) +
+
+            "</div>";
+
+
+          list.appendChild(
+            item
+          );
+
+        }
+
+      );
+
+    }
+
+
+    // =========================================
+    // PROJEKTE LADEN
+    // =========================================
+
+    async function loadProjects() {
+
+      try {
+
+        const response =
+          await fetch(
+            APPS_SCRIPT_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain"
+              },
+
+              body:
+                JSON.stringify({
+                  action:
+                    "getProjects",
+
+                  initData:
+                    tg.initData
+                })
+            }
           );
 
 
@@ -1352,18 +1628,13 @@
 
 
         select.innerHTML =
-
           '<option value="">' +
-
-          'Projekt auswählen...' +
-
-          '</option>';
+          "Projekt auswählen..." +
+          "</option>";
 
 
         projects.forEach(
-
           project => {
-
 
             const option =
               document.createElement(
@@ -1384,12 +1655,10 @@
             );
 
           }
-
         );
 
 
       } catch (error) {
-
 
         console.error(
           "Projektfehler:",
@@ -1407,17 +1676,12 @@
 
     async function loadCategories() {
 
-
       try {
-
 
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -1426,19 +1690,14 @@
               },
 
               body:
-
                 JSON.stringify({
-
                   action:
                     "getCategories",
 
                   initData:
                     tg.initData
-
                 })
-
             }
-
           );
 
 
@@ -1464,7 +1723,6 @@
 
       } catch (error) {
 
-
         console.error(
           "Kategoriefehler:",
           error
@@ -1479,8 +1737,9 @@
     // BUCHUNGSTYP
     // =========================================
 
-    function setBookingType(type) {
-
+    function setBookingType(
+      type
+    ) {
 
       bookingType =
         type;
@@ -1521,7 +1780,6 @@
       selectedCategory = ""
     ) {
 
-
       const select =
         document.getElementById(
           "category"
@@ -1529,12 +1787,9 @@
 
 
       select.innerHTML =
-
         '<option value="">' +
-
-        'Kategorie auswählen...' +
-
-        '</option>';
+        "Kategorie auswählen..." +
+        "</option>";
 
 
       categories
@@ -1546,9 +1801,7 @@
         )
 
         .forEach(
-
           category => {
-
 
             const option =
               document.createElement(
@@ -1580,7 +1833,6 @@
             );
 
           }
-
         );
 
     }
@@ -1626,7 +1878,9 @@
       if (!projectId) {
 
         result.innerHTML =
-          '<span class="error">❌ Bitte ein Projekt auswählen.</span>';
+          '<span class="error">' +
+          "❌ Bitte ein Projekt auswählen." +
+          "</span>";
 
         return;
 
@@ -1636,7 +1890,9 @@
       if (!category) {
 
         result.innerHTML =
-          '<span class="error">❌ Bitte eine Kategorie auswählen.</span>';
+          '<span class="error">' +
+          "❌ Bitte eine Kategorie auswählen." +
+          "</span>";
 
         return;
 
@@ -1649,7 +1905,9 @@
       ) {
 
         result.innerHTML =
-          '<span class="error">❌ Bitte einen gültigen Betrag eingeben.</span>';
+          '<span class="error">' +
+          "❌ Bitte einen gültigen Betrag eingeben." +
+          "</span>";
 
         return;
 
@@ -1695,11 +1953,8 @@
 
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -1708,7 +1963,6 @@
               },
 
               body:
-
                 JSON.stringify({
 
                   action:
@@ -1721,9 +1975,7 @@
                     booking
 
                 })
-
             }
-
           );
 
 
@@ -1741,7 +1993,9 @@
 
 
         result.innerHTML =
-          '<span class="success">✅ Buchung erfolgreich gespeichert.</span>';
+          '<span class="success">' +
+          "✅ Buchung erfolgreich gespeichert." +
+          "</span>";
 
 
         cancelEdit();
@@ -1752,9 +2006,9 @@
 
       } catch (error) {
 
-
         result.innerHTML =
-          '<span class="error">❌ Fehler:<br>' +
+          '<span class="error">' +
+          "❌ Fehler:<br>" +
           error.message +
           "</span>";
 
@@ -1782,19 +2036,17 @@
 
 
       list.innerHTML =
-        '<div class="info">⏳ Buchungen werden geladen...</div>';
+        '<div class="info">' +
+        "⏳ Buchungen werden geladen..." +
+        "</div>";
 
 
       try {
 
-
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -1803,7 +2055,6 @@
               },
 
               body:
-
                 JSON.stringify({
 
                   action:
@@ -1813,9 +2064,7 @@
                     tg.initData
 
                 })
-
             }
-
           );
 
 
@@ -1839,11 +2088,12 @@
 
       } catch (error) {
 
-
         list.innerHTML =
           '<div class="error">' +
           "❌ Buchungen konnten nicht geladen werden.<br><br>" +
-          error.message +
+          escapeHtml(
+            error.message
+          ) +
           "</div>";
 
       }
@@ -1882,9 +2132,7 @@
 
 
       bookings.forEach(
-
         booking => {
-
 
           const item =
             document.createElement(
@@ -1918,29 +2166,23 @@
             '<div class="bookingHeader">' +
 
               '<div class="bookingCategory">' +
-
                 (
                   isIncome
                     ? "💰"
                     : "💸"
                 ) +
-
                 " " +
-
                 escapeHtml(
                   booking.category
                 ) +
-
               "</div>" +
 
               '<div class="bookingAmount ' +
-
                 (
                   isIncome
                     ? "income"
                     : "expense"
                 ) +
-
               '">' +
 
                 (
@@ -1985,15 +2227,12 @@
 
             (
               booking.description
-
                 ? '<div class="bookingDescription">' +
                   escapeHtml(
                     booking.description
                   ) +
                   "</div>"
-
                 : ""
-
             ) +
 
 
@@ -2030,14 +2269,13 @@
           );
 
         }
-
       );
 
     }
 
 
     // =========================================
-    // AUSWERTUNG – PROJEKTE
+    // AUSWERTUNG PROJEKTE
     // =========================================
 
     function populateEvaluationProjects() {
@@ -2054,16 +2292,13 @@
 
 
       select.innerHTML =
-
         '<option value="">' +
         "Alle Projekte" +
         "</option>";
 
 
       projects.forEach(
-
         project => {
-
 
           const option =
             document.createElement(
@@ -2084,7 +2319,6 @@
           );
 
         }
-
       );
 
 
@@ -2126,8 +2360,7 @@
 
 
       if (
-        period ===
-        "custom"
+        period === "custom"
       ) {
 
         customRange
@@ -2146,7 +2379,7 @@
 
 
     // =========================================
-    // DATUM FORMATIEREN
+    // DATUM
     // =========================================
 
     function formatDateForApi(
@@ -2188,7 +2421,7 @@
 
 
     // =========================================
-    // FILTER ERMITTELN
+    // AUSWERTUNGSFILTER
     // =========================================
 
     function getEvaluationFilters() {
@@ -2232,7 +2465,6 @@
         "currentMonth"
       ) {
 
-
         const start =
           new Date(
             now.getFullYear(),
@@ -2267,7 +2499,6 @@
         period ===
         "lastMonth"
       ) {
-
 
         const start =
           new Date(
@@ -2304,7 +2535,6 @@
         "currentYear"
       ) {
 
-
         const start =
           new Date(
             now.getFullYear(),
@@ -2339,7 +2569,6 @@
         period ===
         "custom"
       ) {
-
 
         startDate =
           document
@@ -2394,11 +2623,12 @@
 
 
       content.innerHTML =
-        '<div class="info">⏳ Auswertung wird geladen...</div>';
+        '<div class="info">' +
+        "⏳ Auswertung wird geladen..." +
+        "</div>";
 
 
       try {
-
 
         const filters =
           getEvaluationFilters();
@@ -2406,11 +2636,8 @@
 
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -2419,7 +2646,6 @@
               },
 
               body:
-
                 JSON.stringify({
 
                   action:
@@ -2432,9 +2658,7 @@
                     filters
 
                 })
-
             }
-
           );
 
 
@@ -2458,17 +2682,12 @@
 
       } catch (error) {
 
-
         content.innerHTML =
-
           '<div class="error">' +
-
           "❌ Auswertung konnte nicht geladen werden.<br><br>" +
-
           escapeHtml(
             error.message
           ) +
-
           "</div>";
 
       }
@@ -2477,7 +2696,7 @@
 
 
     // =========================================
-    // FILTER ZURÜCKSETZEN
+    // FILTER RESET
     // =========================================
 
     function resetEvaluationFilters() {
@@ -2525,7 +2744,6 @@
 
       handlePeriodChange();
 
-
       loadEvaluation();
 
     }
@@ -2566,7 +2784,6 @@
 
       const formatMoney =
         value =>
-
           Number(
             value
           ).toLocaleString(
@@ -2587,14 +2804,8 @@
       let html = "";
 
 
-      // =======================================
-      // KENNZAHLEN
-      // =======================================
-
       html +=
-
         '<div class="evaluationCards">' +
-
 
           '<div class="evaluationCard">' +
 
@@ -2644,82 +2855,55 @@
 
           "</div>" +
 
-
         "</div>";
 
 
-      // =======================================
-      // KATEGORIEN
-      // =======================================
-
       html +=
-
         '<div class="evaluationSection">' +
-
           "<h3>📂 Nach Kategorie</h3>";
 
 
-      const categories =
+      const categoryData =
         evaluation.byCategory || {};
 
 
       const categoryEntries =
         Object.entries(
-          categories
+          categoryData
         );
 
 
       if (!categoryEntries.length) {
 
-
         html +=
-
           '<div class="evaluationEmpty">' +
-
           "Keine Daten vorhanden." +
-
           "</div>";
-
 
       } else {
 
-
         categoryEntries
-
           .sort(
             (a, b) =>
               b[1] - a[1]
           )
-
           .forEach(
-
             ([name, value]) => {
 
-
               html +=
-
                 '<div class="evaluationRow">' +
 
                   '<div class="evaluationRowName">' +
-
-                    escapeHtml(
-                      name
-                    ) +
-
+                    escapeHtml(name) +
                   "</div>" +
 
                   '<div class="evaluationRowValue">' +
-
-                    formatMoney(
-                      value
-                    ) +
-
+                    formatMoney(value) +
                   "</div>" +
 
                 "</div>";
 
             }
-
           );
 
       }
@@ -2728,80 +2912,56 @@
       html += "</div>";
 
 
-      // =======================================
-      // PROJEKTE
-      // =======================================
-
       html +=
-
         '<div class="evaluationSection">' +
-
           "<h3>🏠 Nach Projekt</h3>";
 
 
-      const projectsData =
+      const projectData =
         evaluation.byProject || {};
 
 
       const projectEntries =
         Object.entries(
-          projectsData
+          projectData
         );
 
 
       if (!projectEntries.length) {
 
-
         html +=
-
           '<div class="evaluationEmpty">' +
-
           "Keine Daten vorhanden." +
-
           "</div>";
-
 
       } else {
 
-
         projectEntries
-
           .sort(
             (a, b) =>
               b[1] - a[1]
           )
-
           .forEach(
-
             ([projectId, value]) => {
 
-
               html +=
-
                 '<div class="evaluationRow">' +
 
                   '<div class="evaluationRowName">' +
-
                     escapeHtml(
                       getProjectName(
                         projectId
                       )
                     ) +
-
                   "</div>" +
 
                   '<div class="evaluationRowValue">' +
-
-                    formatMoney(
-                      value
-                    ) +
-
+                    formatMoney(value) +
                   "</div>" +
 
                 "</div>";
 
             }
-
           );
 
       }
@@ -2817,7 +2977,7 @@
 
 
     // =========================================
-    // BEARBEITEN
+    // BUCHUNG BEARBEITEN
     // =========================================
 
     function editBooking(
@@ -2974,7 +3134,7 @@
 
 
     // =========================================
-    // LÖSCHEN
+    // BUCHUNG LÖSCHEN
     // =========================================
 
     async function deleteBooking(
@@ -2995,14 +3155,10 @@
 
       try {
 
-
         const response =
           await fetch(
-
             APPS_SCRIPT_URL,
-
             {
-
               method: "POST",
 
               headers: {
@@ -3011,7 +3167,6 @@
               },
 
               body:
-
                 JSON.stringify({
 
                   action:
@@ -3024,9 +3179,7 @@
                     bookingId
 
                 })
-
             }
-
           );
 
 
@@ -3048,13 +3201,9 @@
 
       } catch (error) {
 
-
         alert(
-
           "❌ Fehler beim Löschen:\n\n" +
-
           error.message
-
         );
 
       }
@@ -3073,11 +3222,9 @@
 
       const project =
         projects.find(
-
           p =>
             String(p.id) ===
             String(projectId)
-
         );
 
 
@@ -3095,7 +3242,6 @@
     function escapeHtml(
       value
     ) {
-
 
       return String(value)
 
