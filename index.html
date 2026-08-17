@@ -21,6 +21,7 @@
       margin: 0;
       padding: 20px;
       background: #f4f4f4;
+      color: #222;
     }
 
     h1 {
@@ -160,8 +161,10 @@
       color: white;
     }
 
-    #authResult {
+    #authResult,
+    #registrationResult {
       margin-top: 15px;
+      line-height: 1.5;
     }
 
     #bookingResult {
@@ -474,6 +477,16 @@
       margin-top: 8px;
     }
 
+    /* REGISTRIERUNG */
+
+    .registrationInfo {
+      background: #f8f8f8;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+
   </style>
 
 </head>
@@ -504,42 +517,61 @@
 
   </div>
 
+
   <!-- REGISTRIERUNG -->
 
-<div
-  id="registrationCard"
-  class="card"
-  style="display:none;"
->
-
-  <h2>🔐 Registrierung</h2>
-
-  <p>
-    Du wurdest zur Bauverwaltung eingeladen.
-  </p>
-
-  <p>
-    Bitte gib das Zugangspasswort ein:
-  </p>
-
-  <input
-    id="registrationPassword"
-    type="password"
-    placeholder="Zugangspasswort"
-    autocomplete="off"
+  <div
+    id="registrationCard"
+    class="card"
+    style="display:none;"
   >
 
-  <button
-    id="registrationButton"
-    class="primaryButton"
-    onclick="registerUser()"
-  >
-    🔐 Registrieren
-  </button>
+    <h2>🔐 Registrierung</h2>
 
-  <div id="registrationResult"></div>
+    <div class="registrationInfo">
 
-</div>
+      <p>
+        Du wurdest zur Bauverwaltung eingeladen.
+      </p>
+
+      <p>
+        Benutzer:
+        <strong id="registrationUserName"></strong>
+      </p>
+
+      <p>
+        Bitte gib das Zugangspasswort ein, das du vom Administrator erhalten hast.
+      </p>
+
+    </div>
+
+
+    <label for="registrationPassword">
+      Zugangspasswort
+    </label>
+
+    <input
+      id="registrationPassword"
+      type="password"
+      placeholder="Zugangspasswort"
+      autocomplete="new-password"
+    >
+
+
+    <button
+      id="registrationButton"
+      class="primaryButton"
+      onclick="registerUser()"
+    >
+      🔐 Registrierung abschließen
+    </button>
+
+
+    <div id="registrationResult"></div>
+
+  </div>
+
+
   <!-- LOGIN -->
 
   <div
@@ -547,6 +579,12 @@
     class="card"
     style="display:none;"
   >
+
+    <h2>🔐 Anmeldung</h2>
+
+    <p>
+      Du bist noch nicht angemeldet.
+    </p>
 
     <button
       id="authButton"
@@ -637,9 +675,11 @@
 
 
     <select id="project">
+
       <option value="">
         Projekte werden geladen...
       </option>
+
     </select>
 
 
@@ -678,9 +718,11 @@
 
 
     <select id="category">
+
       <option value="">
         Kategorien werden geladen...
       </option>
+
     </select>
 
 
@@ -754,9 +796,11 @@
 
 
     <div id="bookingsList">
+
       <div class="info">
         ⏳ Buchungen werden geladen...
       </div>
+
     </div>
 
 
@@ -1116,28 +1160,27 @@
 
   <script>
 
-    // =========================================
+    // =========================================================
     // TELEGRAM
-    // =========================================
+    // =========================================================
 
-    const tg =
-      window.Telegram.WebApp;
+    const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
 
 
-    // =========================================
+    // =========================================================
     // APPS SCRIPT
-    // =========================================
+    // =========================================================
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/macros/s/AKfycbytTS_UdYyX0d_I05hTW6l8-YXb3WT1g1PD4BqF-AeGqipgYQJYYRFKhVyPXQyHlPxx/exec";
 
 
-    // =========================================
-    // VARIABLEN
-    // =========================================
+    // =========================================================
+    // GLOBALE VARIABLEN
+    // =========================================================
 
     let projects = [];
     let categories = [];
@@ -1147,51 +1190,359 @@
     let currentInvitationLink = "";
 
 
-    // =========================================
-    // START
-    // =========================================
+    // =========================================================
+    // HILFSFUNKTION: API
+    // =========================================================
 
-    const user =
-      tg.initDataUnsafe.user;
+    async function apiRequest(payload) {
 
-
-    if (!tg.initData || !user) {
-
-      document
-        .getElementById("loginCard")
-        .style.display = "block";
-
-
-      document
-        .getElementById("authResult")
-        .innerHTML =
-          '<span class="error">' +
-          "❌ Diese Seite muss über Telegram geöffnet werden." +
-          "</span>";
-
-    } else {
-
-      document
-        .getElementById("name")
-        .textContent =
-          user.first_name +
-          (
-            user.last_name
-              ? " " + user.last_name
-              : ""
-          );
+      const response = await fetch(
+        APPS_SCRIPT_URL,
+        {
+          method: "POST",
+          redirect: "follow",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        }
+      );
 
 
-      document
-        .getElementById("loginCard")
-        .style.display = "block";
+      const text = await response.text();
+
+
+      let data;
+
+      try {
+
+        data = JSON.parse(text);
+
+      } catch (error) {
+
+        console.error(
+          "Ungültige Serverantwort:",
+          text
+        );
+
+        throw new Error(
+          "Der Server hat keine gültige JSON-Antwort zurückgegeben."
+        );
+
+      }
+
+
+      if (!data.ok) {
+
+        throw new Error(
+          data.error ||
+          "Unbekannter Serverfehler."
+        );
+
+      }
+
+
+      return data;
 
     }
 
 
-    // =========================================
+    // =========================================================
+    // START
+    // =========================================================
+
+    async function initializeApp() {
+
+      const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
+
+
+      // -------------------------------------------------------
+      // NICHT ÜBER TELEGRAM
+      // -------------------------------------------------------
+
+      if (!tg.initData || !user) {
+
+        document
+          .getElementById("loginCard")
+          .style.display = "block";
+
+
+        document
+          .getElementById("authResult")
+          .innerHTML =
+            '<span class="error">' +
+            "❌ Diese Seite muss über Telegram geöffnet werden." +
+            "</span>";
+
+        return;
+
+      }
+
+
+      // -------------------------------------------------------
+      // TELEGRAM-BENUTZER ANZEIGEN
+      // -------------------------------------------------------
+
+      const fullName =
+        (
+          user.first_name +
+          " " +
+          (user.last_name || "")
+        ).trim();
+
+
+      document
+        .getElementById("name")
+        .textContent =
+          fullName;
+
+
+      document
+        .getElementById("registrationUserName")
+        .textContent =
+          fullName;
+
+
+      // -------------------------------------------------------
+      // VORHANDENEN BENUTZER / EINLADUNG PRÜFEN
+      // -------------------------------------------------------
+
+      try {
+
+        const result =
+          await apiRequest({
+
+            action:
+              "checkRegistration",
+
+            initData:
+              tg.initData
+
+          });
+
+
+        /*
+         * Erwartete Antwort:
+         *
+         * {
+         *   ok: true,
+         *   registered: true/false,
+         *   invited: true/false
+         * }
+         *
+         */
+
+
+        if (result.registered) {
+
+          document
+            .getElementById("loginCard")
+            .style.display =
+              "block";
+
+
+          return;
+
+        }
+
+
+        if (result.invited) {
+
+          document
+            .getElementById("registrationCard")
+            .style.display =
+              "block";
+
+
+          return;
+
+        }
+
+
+        // Benutzer ist weder registriert
+        // noch eingeladen.
+
+        document
+          .getElementById("loginCard")
+          .style.display =
+            "block";
+
+
+        document
+          .getElementById("authResult")
+          .innerHTML =
+            '<span class="error">' +
+            "❌ Für deinen Telegram-Account liegt keine Registrierung bzw. Einladung vor." +
+            "</span>";
+
+
+      } catch (error) {
+
+        /*
+         * Falls checkRegistration im Backend
+         * noch nicht vorhanden ist, versuchen
+         * wir direkt die normale Authentifizierung.
+         *
+         * Dadurch bleibt die bestehende App
+         * funktionsfähig.
+         */
+
+        console.warn(
+          "checkRegistration nicht verfügbar oder fehlgeschlagen:",
+          error
+        );
+
+
+        document
+          .getElementById("loginCard")
+          .style.display =
+            "block";
+
+      }
+
+    }
+
+
+    // =========================================================
+    // REGISTRIERUNG
+    // =========================================================
+
+    async function registerUser() {
+
+      const passwordInput =
+        document.getElementById(
+          "registrationPassword"
+        );
+
+
+      const button =
+        document.getElementById(
+          "registrationButton"
+        );
+
+
+      const result =
+        document.getElementById(
+          "registrationResult"
+        );
+
+
+      const password =
+        passwordInput.value;
+
+
+      if (!password) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          "❌ Bitte das Zugangspasswort eingeben." +
+          "</span>";
+
+        passwordInput.focus();
+
+        return;
+
+      }
+
+
+      button.disabled = true;
+
+
+      result.innerHTML =
+        '<span class="info">' +
+        "⏳ Registrierung wird durchgeführt..." +
+        "</span>";
+
+
+      try {
+
+        const data =
+          await apiRequest({
+
+            action:
+              "registerUser",
+
+            initData:
+              tg.initData,
+
+            password:
+              password
+
+          });
+
+
+        result.innerHTML =
+          '<span class="success">' +
+          "✅ Registrierung erfolgreich." +
+          "<br>" +
+          "Du wirst jetzt angemeldet..." +
+          "</span>";
+
+
+        passwordInput.value = "";
+
+
+        /*
+         * Nach erfolgreicher Registrierung
+         * direkt authentifizieren.
+         */
+
+        setTimeout(
+          () => {
+
+            document
+              .getElementById(
+                "registrationCard"
+              )
+              .style.display =
+                "none";
+
+
+            document
+              .getElementById(
+                "loginCard"
+              )
+              .style.display =
+                "block";
+
+
+            authenticate();
+
+          },
+          500
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Registrierungsfehler:",
+          error
+        );
+
+
+        result.innerHTML =
+          '<span class="error">' +
+          "❌ Registrierung fehlgeschlagen:<br>" +
+          escapeHtml(
+            error.message
+          ) +
+          "</span>";
+
+
+        button.disabled =
+          false;
+
+      }
+
+    }
+
+
+    // =========================================================
     // AUTHENTIFIZIERUNG
-    // =========================================
+    // =========================================================
 
     async function authenticate() {
 
@@ -1200,71 +1551,55 @@
           "authResult"
         );
 
+
       const button =
         document.getElementById(
           "authButton"
         );
 
 
+      if (!tg.initData) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          "❌ Telegram-Daten fehlen." +
+          "</span>";
+
+        return;
+
+      }
+
+
       button.disabled = true;
 
+
       result.innerHTML =
-        "⏳ Authentifizierung läuft...";
+        '<span class="info">' +
+        "⏳ Authentifizierung läuft..." +
+        "</span>";
 
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "authenticate",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "authenticate",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error ||
-            "Authentifizierung fehlgeschlagen."
-          );
+          });
 
-        }
-
-
-        // =====================================
-        // BENUTZER SETZEN
-        // =====================================
 
         currentUser =
           data.user;
 
 
-        // =====================================
+        // -----------------------------------------------------
         // BENUTZERKARTE
-        // =====================================
+        // -----------------------------------------------------
 
         document
           .getElementById("userCard")
@@ -1288,9 +1623,9 @@
             currentUser.role;
 
 
-        // =====================================
+        // -----------------------------------------------------
         // LOGIN AUSBLENDEN
-        // =====================================
+        // -----------------------------------------------------
 
         document
           .getElementById("loginCard")
@@ -1298,9 +1633,15 @@
             "none";
 
 
-        // =====================================
-        // HAUPTMENÜ ANZEIGEN
-        // =====================================
+        document
+          .getElementById("registrationCard")
+          .style.display =
+            "none";
+
+
+        // -----------------------------------------------------
+        // HAUPTMENÜ
+        // -----------------------------------------------------
 
         document
           .getElementById("mainMenu")
@@ -1308,9 +1649,9 @@
             "block";
 
 
-        // =====================================
-        // ADMIN PRÜFEN
-        // =====================================
+        // -----------------------------------------------------
+        // ADMIN
+        // -----------------------------------------------------
 
         const isAdmin =
           String(
@@ -1331,30 +1672,27 @@
               : "none";
 
 
-        // =====================================
+        // -----------------------------------------------------
         // DATEN LADEN
-        // =====================================
+        // -----------------------------------------------------
 
         await loadProjects();
 
         await loadCategories();
 
 
-        // Buchungen dürfen das Menü nicht blockieren
         loadBookings()
           .catch(
             error => {
+
               console.error(
                 "Buchungen konnten nicht geladen werden:",
                 error
               );
+
             }
           );
 
-
-        // =====================================
-        // MENÜ
-        // =====================================
 
         showPage("menu");
 
@@ -1384,9 +1722,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // SEITENNAVIGATION
-    // =========================================
+    // =========================================================
 
     function showPage(page) {
 
@@ -1503,9 +1841,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // ADMIN-BEREICH
-    // =========================================
+    // =========================================================
 
     function showAdminSection(section) {
 
@@ -1574,9 +1912,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // EINLADUNG ERSTELLEN
-    // =========================================
+    // =========================================================
 
     async function createInvitation() {
 
@@ -1614,43 +1952,16 @@
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "createInvitation",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "createInvitation",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error
-          );
-
-        }
+          });
 
 
         currentInvitationLink =
@@ -1703,9 +2014,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // EINLADUNG KOPIEREN
-    // =========================================
+    // =========================================================
 
     async function copyInvitationLink() {
 
@@ -1736,6 +2047,7 @@
 
         input.select();
 
+
         document.execCommand(
           "copy"
         );
@@ -1750,9 +2062,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // TELEGRAM LINK ÖFFNEN
-    // =========================================
+    // =========================================================
 
     function openInvitationLink() {
 
@@ -1769,9 +2081,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BENUTZER LADEN
-    // =========================================
+    // =========================================================
 
     async function loadUsers() {
 
@@ -1789,43 +2101,16 @@
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getUsers",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "getUsers",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error
-          );
-
-        }
+          });
 
 
         displayUsers(
@@ -1848,9 +2133,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BENUTZER DARSTELLEN
-    // =========================================
+    // =========================================================
 
     function displayUsers(users) {
 
@@ -1988,9 +2273,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // ROLLE ÄNDERN
-    // =========================================
+    // =========================================================
 
     async function changeUserRole(userId) {
 
@@ -2024,49 +2309,21 @@
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
+        await apiRequest({
 
-              method: "POST",
+          action:
+            "updateUserRole",
 
-              headers: {
-                "Content-Type": "text/plain"
-              },
+          initData:
+            tg.initData,
 
-              body:
-                JSON.stringify({
+          userId:
+            userId,
 
-                  action:
-                    "updateUserRole",
+          newRole:
+            newRole
 
-                  initData:
-                    tg.initData,
-
-                  userId:
-                    userId,
-
-                  newRole:
-                    newRole
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
+        });
 
 
         alert(
@@ -2089,51 +2346,24 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // PROJEKTE LADEN
-    // =========================================
+    // =========================================================
 
     async function loadProjects() {
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getProjects",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "getProjects",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error
-          );
-
-        }
+          });
 
 
         projects =
@@ -2189,51 +2419,24 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // KATEGORIEN LADEN
-    // =========================================
+    // =========================================================
 
     async function loadCategories() {
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getCategories",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "getCategories",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error
-          );
-
-        }
+          });
 
 
         categories =
@@ -2255,9 +2458,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNGSTYP
-    // =========================================
+    // =========================================================
 
     function setBookingType(type) {
 
@@ -2288,9 +2491,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // KATEGORIEN
-    // =========================================
+    // =========================================================
 
     function updateCategoryList(
       selectedCategory = ""
@@ -2351,9 +2554,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNG SPEICHERN
-    // =========================================
+    // =========================================================
 
     async function saveBooking() {
 
@@ -2462,46 +2665,18 @@
         }
 
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
+        await apiRequest({
 
-              method: "POST",
+          action:
+            action,
 
-              headers: {
-                "Content-Type": "text/plain"
-              },
+          initData:
+            tg.initData,
 
-              body:
-                JSON.stringify({
+          booking:
+            booking
 
-                  action:
-                    action,
-
-                  initData:
-                    tg.initData,
-
-                  booking:
-                    booking
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
+        });
 
 
         result.innerHTML =
@@ -2531,9 +2706,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNGEN LADEN
-    // =========================================
+    // =========================================================
 
     async function loadBookings() {
 
@@ -2556,43 +2731,16 @@
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getBookings",
-
-                  initData:
-                    tg.initData
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "getBookings",
 
-        if (!data.ok) {
+            initData:
+              tg.initData
 
-          throw new Error(
-            data.error
-          );
-
-        }
+          });
 
 
         displayBookings(
@@ -2615,9 +2763,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNGEN DARSTELLEN
-    // =========================================
+    // =========================================================
 
     function displayBookings(bookings) {
 
@@ -2770,9 +2918,7 @@
             "</div>";
 
 
-          list.appendChild(
-            item
-          );
+          list.appendChild(item);
 
         }
       );
@@ -2780,9 +2926,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // AUSWERTUNG PROJEKTE
-    // =========================================
+    // =========================================================
 
     function populateEvaluationProjects() {
 
@@ -2843,9 +2989,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // ZEITRAUM
-    // =========================================
+    // =========================================================
 
     function handlePeriodChange() {
 
@@ -2882,9 +3028,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // DATUM
-    // =========================================
+    // =========================================================
 
     function formatDateForApi(date) {
 
@@ -2921,9 +3067,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // AUSWERTUNGSFILTER
-    // =========================================
+    // =========================================================
 
     function getEvaluationFilters() {
 
@@ -3092,9 +3238,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // AUSWERTUNG LADEN
-    // =========================================
+    // =========================================================
 
     async function loadEvaluation() {
 
@@ -3116,46 +3262,19 @@
           getEvaluationFilters();
 
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
-
-              method: "POST",
-
-              headers: {
-                "Content-Type": "text/plain"
-              },
-
-              body:
-                JSON.stringify({
-
-                  action:
-                    "getEvaluation",
-
-                  initData:
-                    tg.initData,
-
-                  filters:
-                    filters
-
-                })
-
-            }
-          );
-
-
         const data =
-          await response.json();
+          await apiRequest({
 
+            action:
+              "getEvaluation",
 
-        if (!data.ok) {
+            initData:
+              tg.initData,
 
-          throw new Error(
-            data.error
-          );
+            filters:
+              filters
 
-        }
+          });
 
 
         displayEvaluation(
@@ -3178,9 +3297,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // FILTER RESET
-    // =========================================
+    // =========================================================
 
     function resetEvaluationFilters() {
 
@@ -3231,9 +3350,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // AUSWERTUNG DARSTELLEN
-    // =========================================
+    // =========================================================
 
     function displayEvaluation(evaluation) {
 
@@ -3453,9 +3572,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNG BEARBEITEN
-    // =========================================
+    // =========================================================
 
     function editBooking(booking) {
 
@@ -3534,9 +3653,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // BEARBEITUNG ABBRECHEN
-    // =========================================
+    // =========================================================
 
     function cancelEdit() {
 
@@ -3607,12 +3726,15 @@
         .innerHTML =
           "";
 
+
+      setBookingType("Ausgabe");
+
     }
 
 
-    // =========================================
+    // =========================================================
     // BUCHUNG LÖSCHEN
-    // =========================================
+    // =========================================================
 
     async function deleteBooking(bookingId) {
 
@@ -3629,46 +3751,18 @@
 
       try {
 
-        const response =
-          await fetch(
-            APPS_SCRIPT_URL,
-            {
+        await apiRequest({
 
-              method: "POST",
+          action:
+            "deleteBooking",
 
-              headers: {
-                "Content-Type": "text/plain"
-              },
+          initData:
+            tg.initData,
 
-              body:
-                JSON.stringify({
+          bookingId:
+            bookingId
 
-                  action:
-                    "deleteBooking",
-
-                  initData:
-                    tg.initData,
-
-                  bookingId:
-                    bookingId
-
-                })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!data.ok) {
-
-          throw new Error(
-            data.error
-          );
-
-        }
+        });
 
 
         await loadBookings();
@@ -3686,9 +3780,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // PROJEKTNAME
-    // =========================================
+    // =========================================================
 
     function getProjectName(projectId) {
 
@@ -3707,9 +3801,9 @@
     }
 
 
-    // =========================================
+    // =========================================================
     // HTML ESCAPING
-    // =========================================
+    // =========================================================
 
     function escapeHtml(value) {
 
@@ -3741,6 +3835,13 @@
         );
 
     }
+
+
+    // =========================================================
+    // APP STARTEN
+    // =========================================================
+
+    initializeApp();
 
   </script>
 
